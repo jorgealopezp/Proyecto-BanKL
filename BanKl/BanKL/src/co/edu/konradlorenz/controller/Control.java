@@ -11,8 +11,6 @@ public class Control {
     TarjetaCredito objTC = new TarjetaCredito();
     Ventana objV = new Ventana();
 
-
-
     public void run() {
         objV.mostrarMensaje("Bienvenido al sistema BanKL");
         objV.pedirEntero("Presione 1 para continuar...");
