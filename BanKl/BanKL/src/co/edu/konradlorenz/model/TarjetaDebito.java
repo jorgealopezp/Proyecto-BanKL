@@ -1,8 +1,11 @@
 package co.edu.konradlorenz.model;
 
-import co.edu.konradlorenz.view.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TarjetaDebito extends Cuenta {
+
+    private List<String> alertas = new ArrayList<>();
 
     public TarjetaDebito() {
     }
@@ -15,9 +18,7 @@ public class TarjetaDebito extends Cuenta {
     public void consignar(double valor) {
         if (valor > 0) {
             setSaldo(getSaldo() + valor);
-            Ventana.mostrarMensaje("Consignación exitosa. Saldo actual: " + getSaldo());
-        } else {
-            Ventana.mostrarMensaje("El valor a consignar debe ser mayor que cero.");
+            alertas.add("Depósito en tarjeta débito: " + valor);
         }
     }
  
@@ -25,12 +26,11 @@ public class TarjetaDebito extends Cuenta {
     public void retirar(double valor) {
         if (valor > 0 && valor <= getSaldo()) {
             setSaldo(getSaldo() - valor);
-            Ventana.mostrarMensaje("Retiro exitoso. Saldo actual: " + getSaldo());
-        } else if (valor <= 0) {
-            Ventana.mostrarMensaje("El valor a retirar debe ser mayor que cero.");
-        } else {
-            Ventana.mostrarMensaje("No hay suficiente saldo para realizar la operación.");
+            alertas.add("Retiro en tarjeta débito: " + valor);
         }
     }
 
+    public List<String> getAlertas() {
+        return new ArrayList<>(alertas);
+    }
 }

@@ -1,75 +1,48 @@
 package co.edu.konradlorenz.model;
 
-import co.edu.konradlorenz.view.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TarjetaCredito extends Cuenta {
 
-    private double limiteCredito;
-    private double interes;
-    private double deuda;
+    private double cupo;
+    private List<String> alertas = new ArrayList<>();
 
-    public TarjetaCredito() {
-    }
-
-    public TarjetaCredito(int numeroCuenta, String propietario, double saldo, int numeroTarjeta, String fechaExpiracion, int cvv, double limiteCredito, double interes, double deuda) {
+    public TarjetaCredito(int numeroCuenta, String propietario, int saldo, int numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
-        this.limiteCredito = limiteCredito;
-        this.interes = interes;
-        this.deuda = deuda;
+        this.cupo = cupo;
     }
- 
-    public double getLimiteCredito() {
-        return limiteCredito;
+    public TarjetaCredito() {
+        super();
     }
 
-    public void setLimiteCredito(double limiteCredito) {
-        this.limiteCredito = limiteCredito;
+    public double getCupo() {
+        return cupo;
     }
 
-    public double getInteres() {
-        return interes;
-    }
-
-    public void setInteres(double interes) {
-        this.interes = interes;
-    }
-
-    public double getDeuda() {
-        return deuda;
-    }
-
-    public void setDeuda(double deuda) {
-        this.deuda = deuda;
+    public void setCupo(double cupo) {
+        this.cupo = cupo;
     }
 
     @Override
-    public String toString() {
-        return "TarjetaCredito{" + "limiteCredito=" + limiteCredito + ", interes=" + interes + ", deuda=" + deuda + '}';
+    public void consignar(double valor) {
+        if (valor > 0) {
+            setSaldo(getSaldo() + valor);
+            cupo += valor;
+            alertas.add("Pago realizado en tarjeta de crédito: " + valor);
+        }
     }
-    
-    
 
     @Override
     public void retirar(double valor) {
-        if (valor > 0 && valor <= getSaldo()) {
+        if (valor > 0 && valor <= cupo) {
             setSaldo(getSaldo() - valor);
-            Ventana.mostrarMensaje("Retiro exitoso. Saldo actual: " + getSaldo());
-        } else if (valor <= 0) {
-            Ventana.mostrarMensaje("El valor a retirar debe ser mayor que cero.");
-        } else {
-            Ventana.mostrarMensaje("No hay suficiente saldo para realizar la operación.");
+            cupo -= valor;
+            alertas.add("Avance en efectivo de tarjeta de crédito: " + valor);
         }
     }
 
-    public void pagarDeuda(double valor) {
-        if (valor > 0 && valor <= getSaldo()) {
-            setSaldo(getSaldo() - valor);
-            setDeuda(getDeuda() - valor);
-            Ventana.mostrarMensaje("Pago de deuda exitoso. Saldo actual: " + getSaldo());
-        } else if (valor <= 0) {
-            Ventana.mostrarMensaje("El valor a pagar debe ser mayor que cero.");
-        } else {
-            Ventana.mostrarMensaje("No hay suficiente saldo para realizar la operación.");
-        }
+    public List<String> getAlertas() {
+        return new ArrayList<>(alertas);
     }
 }

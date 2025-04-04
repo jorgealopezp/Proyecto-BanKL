@@ -1,8 +1,8 @@
 package co.edu.konradlorenz.controller;
 
-import co.edu.konradlorenz.model.Cuenta;
-import co.edu.konradlorenz.model.TarjetaCredito;
-import co.edu.konradlorenz.model.TarjetaDebito;
+import java.util.List;
+
+import co.edu.konradlorenz.model.*;
 import co.edu.konradlorenz.view.Ventana;
 
 public class Control {
@@ -10,31 +10,33 @@ public class Control {
     Cuenta objC = new Cuenta();
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
-    Ventana objV = new Ventana();
+    AlertasBancarias objAB = new AlertasBancarias();
+    SeguridadBancaria objSB = new SeguridadBancaria();
 
     public void run() {
-        objV.mostrarMensaje("Bienvenido al sistema BanKL");
+        Ventana.mostrarMensaje("Bienvenido al sistema BanKL");
         int opcion = 0;
         do {
-            objV.mostrarMensaje("\nMenú Principal");
-            objV.mostrarMensaje("1. Información de la cuenta");
-            objV.mostrarMensaje("2. Información de tarjetas");
-            objV.mostrarMensaje("3. Cambio de divisas");
-            objV.mostrarMensaje("4. Protección de valores");
-            objV.mostrarMensaje("5. Ver alertas");
-            objV.mostrarMensaje("6. Salir");
+            Ventana.mostrarMensaje("\nMenú Principal");
+            Ventana.mostrarMensaje("1. Información de la cuenta");
+            Ventana.mostrarMensaje("2. Información de tarjetas");
+            Ventana.mostrarMensaje("3. Cambio de divisas");
+            Ventana.mostrarMensaje("4. Protección de valores");
+            Ventana.mostrarMensaje("5. Ver alertas");
+            Ventana.mostrarMensaje("6. Salir");
 
             try {
-                opcion = objV.pedirEntero("Seleccione una opción: ");
+                opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
                 if (opcion < 1 || opcion > 6) {
-                    objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
                     continue;
                 }
 
                 switch (opcion) {
                     case 1:
                         mostrarInformacionCuenta();
+
                         break;
                     case 2:
                         administrarTarjetas();
@@ -49,34 +51,34 @@ public class Control {
                         verAlertas();
                         break;
                     case 6:
-                        objV.mostrarMensaje("Saliendo del sistema...");
+                        Ventana.mostrarMensaje("Saliendo del sistema...");
                         break;
                 }
             } catch (Exception e) {
-                objV.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
+                Ventana.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
             }
         } while (opcion != 6);
     }
 
     private void mostrarInformacionCuenta() {
-        objV.mostrarMensaje("\nInformación de la Cuenta");
-        objV.mostrarMensaje("Saldo actual: " + objC.getSaldo());
+        Ventana.mostrarMensaje("\nInformación de la Cuenta");
+        Ventana.mostrarMensaje("Saldo actual: " + objC.getSaldo());
     }
 
     private void administrarTarjetas() {
         int opcion = 0;
         do {
-            objV.mostrarMensaje("\nAdministrar Tarjetas");
-            objV.mostrarMensaje("1. Tarjeta Débito");
-            objV.mostrarMensaje("2. Tarjeta Crédito");
-            objV.mostrarMensaje("3. Volver");
+            Ventana.mostrarMensaje("\nAdministrar Tarjetas");
+            Ventana.mostrarMensaje("1. Tarjeta Débito");
+            Ventana.mostrarMensaje("2. Tarjeta Crédito");
+            Ventana.mostrarMensaje("3. Volver");
 
             try {
-                opcion = objV.pedirEntero("Seleccione una opción: ");
+                opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
                 if (opcion < 1 || opcion > 3) {
-                    objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
-                    continue; 
+                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    continue;
                 }
 
                 switch (opcion) {
@@ -90,78 +92,120 @@ public class Control {
                         return;
                 }
             } catch (Exception e) {
-                objV.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 3.");
+                Ventana.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 3.");
             }
-        } while (opcion !=3);
+        } while (opcion != 3);
     }
 
     private void gestionarTarjetaDebito() {
         int opcion;
         do {
-            objV.mostrarMensaje("\nGestión de Tarjeta Débito");
-            objV.mostrarMensaje("Saldo: " + objTD.getSaldo());
-            objV.mostrarMensaje("1. Depositar");
-            objV.mostrarMensaje("2. Retirar");
-            objV.mostrarMensaje("3. Volver");
-            opcion = objV.pedirEntero("Seleccione una opción: ");
+            Ventana.mostrarMensaje("\nGestión de Tarjeta Débito");
+            Ventana.mostrarMensaje("Saldo: " + objTD.getSaldo());
+            Ventana.mostrarMensaje("1. Depositar");
+            Ventana.mostrarMensaje("2. Retirar");
+            Ventana.mostrarMensaje("3. Volver");
+            opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
                 case 1:
-                    double montoDeposito = objV.pedirDouble("Ingrese el monto a depositar: ");
-                    objTD.consignar(montoDeposito);
-                    objV.mostrarMensaje("Depósito realizado.");
+                    double montoDeposito = Ventana.pedirDouble("Ingrese el monto a depositar: ");
+                    if (montoDeposito < 0) {
+                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                    } else {
+                        objTD.consignar(montoDeposito);
+                        objAB.registrarAlerta(Alerta.getContador() + 1, "Depósito",
+                                "Depósito de " + montoDeposito + " en tarjeta débito");
+                        Ventana.mostrarMensaje("Depósito realizado.");
+                    }
                     break;
                 case 2:
-                    double montoRetiro = objV.pedirDouble("Ingrese el monto a retirar: ");
-                    objTD.retirar(montoRetiro);
-                    objV.mostrarMensaje("Retiro realizado.");
+                    double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
+                    if (montoRetiro < 0) {
+                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                    } else if (montoRetiro > objTD.getSaldo()) {
+                        Ventana.mostrarMensaje("Saldo insuficiente. Por favor, ingrese un monto menor.");
+                    } else {
+                        objTD.retirar(montoRetiro);
+                        objAB.registrarAlerta(Alerta.getContador() + 1, "Retiro",
+                                "Retiro de " + montoRetiro + " en tarjeta débito");
+                        Ventana.mostrarMensaje("Retiro realizado.");
+                    }
                     break;
                 case 3:
                     return;
                 default:
-                    objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
             }
         } while (opcion != 3);
+
     }
 
     private void gestionarTarjetaCredito() {
         int opcion;
         do {
-            objV.mostrarMensaje("\nGestión de Tarjeta Crédito");
-            objV.mostrarMensaje("Cupo disponible: " + objTC.getSaldo());
-            objV.mostrarMensaje("1. Pagar");
-            objV.mostrarMensaje("2. Retirar");
-            objV.mostrarMensaje("3. Volver");
-            opcion = objV.pedirEntero("Seleccione una opción: ");
+            Ventana.mostrarMensaje("\nGestión de Tarjeta Crédito");
+            Ventana.mostrarMensaje("Cupo disponible: " + objTC.getSaldo());
+            Ventana.mostrarMensaje("1. Pagar");
+            Ventana.mostrarMensaje("2. Retirar");
+            Ventana.mostrarMensaje("3. Volver");
+            opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
                 case 1:
-                    double montoPago = objV.pedirDouble("Ingrese el monto a pagar: ");
-                    objTC.consignar(montoPago);
-                    objV.mostrarMensaje("Pago realizado.");
+                    double montoPago = Ventana.pedirDouble("Ingrese el monto a pagar: ");
+                    if (montoPago < 0) {
+                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                    } else {
+                        objTC.consignar(montoPago);
+                        objAB.registrarAlerta(Alerta.getContador() + 1, "Pago",
+                                "Pago de " + montoPago + " en tarjeta crédito");
+                        Ventana.mostrarMensaje("Pago realizado.");
+                    }
                     break;
                 case 2:
-                    double montoRetiro = objV.pedirDouble("Ingrese el monto a retirar: ");
-                    objTC.retirar(montoRetiro);
-                    objV.mostrarMensaje("Retiro realizado.");
+                    double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
+                    if (montoRetiro < 0) {
+                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                    } else if (montoRetiro > objTC.getSaldo()) {
+                        Ventana.mostrarMensaje("Cupo disponible insuficiente. Por favor, ingrese un monto menor.");
+                    } else {
+                        objTC.retirar(montoRetiro);
+                        objAB.registrarAlerta(Alerta.getContador() + 1, "Retiro",
+                                "Retiro de " + montoRetiro + " en tarjeta crédito");
+                        Ventana.mostrarMensaje("Retiro realizado.");
+                    }
                     break;
                 case 3:
                     return;
                 default:
-                    objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
             }
         } while (opcion != 3);
     }
 
     private void realizarCambioDivisas() {
-        objV.mostrarMensaje("\nCambio de Divisas - Funcionalidad en desarrollo");
+        Ventana.mostrarMensaje("\nCambio de Divisas");
+        Ventana.mostrarMensaje("En desarrollo...");
+        Ventana.mostrarMensaje("Por favor, consulte más tarde.");
     }
 
     private void protegerValores() {
-        objV.mostrarMensaje("\nProtección de Valores - Funcionalidad en desarrollo");
+        Ventana.mostrarMensaje("\nProtección de Valores");
+        Ventana.mostrarMensaje("En desarrollo...");
+        Ventana.mostrarMensaje("Por favor, consulte más tarde.");
     }
 
     private void verAlertas() {
-        objV.mostrarMensaje("\nAlertas - Funcionalidad en desarrollo");
+        List<Alerta> alertas = objAB.revisarAlertas();
+        if (alertas.isEmpty()) {
+            Ventana.mostrarMensaje("No hay alertas registradas.");
+        } else {
+            Ventana.mostrarMensaje("Alertas registradas:");
+            for (Alerta alerta : alertas) {
+                Ventana.mostrarMensaje("ID: " + alerta.getId() + ", Tipo: " + alerta.getTipo() + ", Descripción: "
+                        + alerta.getDescripcion());
+            }
+        }
     }
 }
