@@ -6,6 +6,7 @@ import co.edu.konradlorenz.model.TarjetaDebito;
 import co.edu.konradlorenz.view.Ventana;
 
 public class Control {
+
     Cuenta objC = new Cuenta();
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
@@ -13,7 +14,6 @@ public class Control {
 
     public void run() {
         objV.mostrarMensaje("Bienvenido al sistema BanKL");
-        objV.pedirEntero("Presione 1 para continuar...");
         int opcion;
         do {
             objV.mostrarMensaje("\nMenú Principal");
@@ -23,31 +23,39 @@ public class Control {
             objV.mostrarMensaje("4. Protección de valores");
             objV.mostrarMensaje("5. Ver alertas");
             objV.mostrarMensaje("6. Salir");
-            opcion = objV.pedirEntero("Seleccione una opción: ");
 
-            switch (opcion) {
-                case 1:
-                    mostrarInformacionCuenta();   
-                    break;
-                case 2:
-                    administrarTarjetas();
-                    break;
-                case 3:
-                    realizarCambioDivisas();
-                    break;
-                case 4:
-                    protegerValores();
-                    break;
-                case 5:
-                    verAlertas();
-                    break;
-                case 6:
-                    objV.mostrarMensaje("Saliendo del sistema...");
-                    break;
-                default:
+            try {
+                opcion = objV.pedirEntero("Seleccione una opción: ");
+
+                if (opcion < 1 || opcion > 6) {
                     objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    continue;
+                }
+
+                switch (opcion) {
+                    case 1:
+                        mostrarInformacionCuenta();
+                        break;
+                    case 2:
+                        administrarTarjetas();
+                        break;
+                    case 3:
+                        realizarCambioDivisas();
+                        break;
+                    case 4:
+                        protegerValores();
+                        break;
+                    case 5:
+                        verAlertas();
+                        break;
+                    case 6:
+                        objV.mostrarMensaje("Saliendo del sistema...");
+                        break;
+                }
+            } catch (Exception e) {
+                objV.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
             }
-        } while (opcion != 6);
+        } while (true);
     }
 
     private void mostrarInformacionCuenta() {
@@ -91,9 +99,9 @@ public class Control {
 
             switch (opcion) {
                 case 1:
-                double montoDeposito = objV.pedirDouble("Ingrese el monto a depositar: ");
-                objTD.consignar(montoDeposito);
-                objV.mostrarMensaje("Depósito realizado.");
+                    double montoDeposito = objV.pedirDouble("Ingrese el monto a depositar: ");
+                    objTD.consignar(montoDeposito);
+                    objV.mostrarMensaje("Depósito realizado.");
                     break;
                 case 2:
                     double montoRetiro = objV.pedirDouble("Ingrese el monto a retirar: ");
@@ -149,4 +157,3 @@ public class Control {
         objV.mostrarMensaje("\nAlertas - Funcionalidad en desarrollo");
     }
 }
-
