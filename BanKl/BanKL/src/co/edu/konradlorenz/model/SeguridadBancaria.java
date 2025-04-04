@@ -46,8 +46,5 @@ public class SeguridadBancaria {
     return null;
 }
 
-public boolean existeValor(int idValor) {
-    return listaValoresCustodiados.stream().anyMatch(valor -> valor.getId() == idValor);
-}
 
 }
