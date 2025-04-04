@@ -14,7 +14,7 @@ public class Control {
 
     public void run() {
         objV.mostrarMensaje("Bienvenido al sistema BanKL");
-        int opcion;
+        int opcion = 0;
         do {
             objV.mostrarMensaje("\nMenú Principal");
             objV.mostrarMensaje("1. Información de la cuenta");
@@ -55,7 +55,7 @@ public class Control {
             } catch (Exception e) {
                 objV.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
             }
-        } while (true);
+        } while (opcion != 6);
     }
 
     private void mostrarInformacionCuenta() {
@@ -64,27 +64,35 @@ public class Control {
     }
 
     private void administrarTarjetas() {
-        int opcion;
+        int opcion = 0;
         do {
             objV.mostrarMensaje("\nAdministrar Tarjetas");
             objV.mostrarMensaje("1. Tarjeta Débito");
             objV.mostrarMensaje("2. Tarjeta Crédito");
             objV.mostrarMensaje("3. Volver");
-            opcion = objV.pedirEntero("Seleccione una opción: ");
 
-            switch (opcion) {
-                case 1:
-                    gestionarTarjetaDebito();
-                    break;
-                case 2:
-                    gestionarTarjetaCredito();
-                    break;
-                case 3:
-                    return;
-                default:
+            try {
+                opcion = objV.pedirEntero("Seleccione una opción: ");
+
+                if (opcion < 1 || opcion > 3) {
                     objV.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    continue; 
+                }
+
+                switch (opcion) {
+                    case 1:
+                        gestionarTarjetaDebito();
+                        break;
+                    case 2:
+                        gestionarTarjetaCredito();
+                        break;
+                    case 3:
+                        return;
+                }
+            } catch (Exception e) {
+                objV.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 3.");
             }
-        } while (opcion != 3);
+        } while (opcion !=3);
     }
 
     private void gestionarTarjetaDebito() {
