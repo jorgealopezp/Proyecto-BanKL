@@ -1,6 +1,5 @@
 package co.edu.konradlorenz.model;
 
-import co.edu.konradlorenz.view.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,14 +33,4 @@ public class AlertasBancarias implements Alertas {
         return new ArrayList<>(listaAlertas);
     }
 
-    @Override
-    public void tomarAccion(int idAlerta, String accion) {
-        for (Alerta alerta : listaAlertas) {
-            if (alerta.getId() == idAlerta) {
-                Ventana.mostrarMensaje("Acción tomada en la alerta " + idAlerta + ": " + accion);
-                return;
-            }
-        }
-        Ventana.mostrarMensaje("No se encontró la alerta con ID " + idAlerta);
-    }
 }

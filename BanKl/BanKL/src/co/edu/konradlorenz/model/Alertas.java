@@ -8,6 +8,6 @@ public interface Alertas {
 
     List<Alerta> revisarAlertas();
 
-    void tomarAccion(int idAlerta, String accion);
+    
 }
  

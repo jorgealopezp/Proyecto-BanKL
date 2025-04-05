@@ -65,7 +65,7 @@ public class Control {
         Ventana.mostrarMensaje("Saldo actual: " + objC.getSaldo());
     }
 
-    private void administrarTarjetas() {
+    public void administrarTarjetas() {
         int opcion = 0;
         do {
             Ventana.mostrarMensaje("\nAdministrar Tarjetas");
@@ -97,7 +97,7 @@ public class Control {
         } while (opcion != 3);
     }
 
-    private void gestionarTarjetaDebito() {
+    public void gestionarTarjetaDebito() {
         int opcion;
         do {
             Ventana.mostrarMensaje("\nGestión de Tarjeta Débito");
@@ -141,7 +141,7 @@ public class Control {
 
     }
 
-    private void gestionarTarjetaCredito() {
+    public void gestionarTarjetaCredito() {
         int opcion;
         do {
             Ventana.mostrarMensaje("\nGestión de Tarjeta Crédito");
@@ -184,19 +184,19 @@ public class Control {
         } while (opcion != 3);
     }
 
-    private void realizarCambioDivisas() {
+    public void realizarCambioDivisas() {
         Ventana.mostrarMensaje("\nCambio de Divisas");
         Ventana.mostrarMensaje("En desarrollo...");
         Ventana.mostrarMensaje("Por favor, consulte más tarde.");
     }
 
-    private void protegerValores() {
+    public void protegerValores() {
         Ventana.mostrarMensaje("\nProtección de Valores");
         Ventana.mostrarMensaje("En desarrollo...");
         Ventana.mostrarMensaje("Por favor, consulte más tarde.");
     }
 
-    private void verAlertas() {
+    public void verAlertas() {
         List<Alerta> alertas = objAB.revisarAlertas();
         if (alertas.isEmpty()) {
             Ventana.mostrarMensaje("No hay alertas registradas.");
