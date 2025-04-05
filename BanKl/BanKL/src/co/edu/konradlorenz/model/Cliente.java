@@ -2,8 +2,9 @@ package co.edu.konradlorenz.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Cliente {
+public abstract class Cliente {
 
     protected String nombres;
     protected String apellidos;
@@ -12,18 +13,25 @@ public class Cliente {
     protected int telefono;
     protected String email;
     protected List<Cuenta> cuentas;
+    protected String usuarioIS;
+    protected String contraseña;
+    protected int pinSeguridad;
 
     public Cliente() {
+        this.cuentas = new ArrayList<>();
     }
 
-    public Cliente(String nombres, String apellidos, String id, String direccion, int telefono, String email) {
+    public Cliente(String nombres, String apellidos, String id, String direccion, int telefono, String email, List<Cuenta> cuentas, String usuarioIS, String contraseña) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.id = id;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
-        this.cuentas = new ArrayList<>();
+        this.cuentas = cuentas != null ? cuentas : new ArrayList<>();
+        this.usuarioIS = usuarioIS;
+        this.contraseña = contraseña;
+
     }
 
     public String getNombres() {
@@ -74,17 +82,59 @@ public class Cliente {
         this.email = email;
     }
 
-    public List<Cuenta> getCuenta() {
+    public List<Cuenta> getCuentas() {
         return cuentas;
     }
 
-    public void setCuenta(List<Cuenta> cuenta) {
-        this.cuentas = cuenta;
+    public void setCuentas(List<Cuenta> cuentas) {
+        this.cuentas = cuentas;
+    }
+
+    public String getUsuarioIS() {
+        return usuarioIS;
+    }
+
+    public void setUsuarioIS(String usuarioIS) {
+        this.usuarioIS = usuarioIS;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public int getPinSeguridad() {
+        return pinSeguridad;
+    }
+
+    public void setPinSeguridad(int pinSeguridad) {
+        this.pinSeguridad = pinSeguridad;
     }
 
     @Override
     public String toString() {
-        return "Cliente{" + "nombres=" + nombres + ", apellidos=" + apellidos + ", id=" + id + ", direccion=" + direccion + ", telefono=" + telefono + ", email=" + email + ", cuentas=" + cuentas + '}';
+        return "Cliente{"
+                + "nombres='" + nombres + '\''
+                + ", apellidos='" + apellidos + '\''
+                + ", id='" + id + '\''
+                + ", direccion='" + direccion + '\''
+                + ", telefono=" + telefono
+                + ", email='" + email + '\''
+                + ", cuentas=" + cuentas
+                + ", usuarioIS='" + usuarioIS + '\''
+                + ", contraseña='" + contraseña + '\''
+                + ", pinSeguridad=" + pinSeguridad
+                + '}';
     }
 
+    public void generarPinSeguridad() {
+        this.pinSeguridad = new Random().nextInt(9000) + 1000;
+    }
+
+    public abstract void registrarCliente();
+
+    public abstract boolean iniciarSesion(String usuario, String contraseña, int pin);
 }
