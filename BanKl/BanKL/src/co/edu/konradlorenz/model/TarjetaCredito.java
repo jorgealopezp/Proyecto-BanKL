@@ -12,6 +12,7 @@ public class TarjetaCredito extends Cuenta {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
         this.cupo = cupo;
     }
+
     public TarjetaCredito() {
         super();
     }
@@ -26,23 +27,49 @@ public class TarjetaCredito extends Cuenta {
 
     @Override
     public void consignar(double valor) {
-        if (valor > 0) {
+        try {
+            validarTransaccion(valor, 30000000);
+
             setSaldo(getSaldo() + valor);
             cupo += valor;
             alertas.add("Pago realizado en tarjeta de crédito: " + valor);
+
+        } catch (IllegalArgumentException e) {
+            alertas.add("Error en consignación: " + e.getMessage());
         }
     }
 
     @Override
     public void retirar(double valor) {
-        if (valor > 0 && valor <= cupo) {
+        try {
+            validarTransaccion(valor, 3000000); 
+
+            if (valor > cupo) {
+                throw new IllegalArgumentException("El valor excede el cupo disponible.");
+            }
+
             setSaldo(getSaldo() - valor);
             cupo -= valor;
             alertas.add("Avance en efectivo de tarjeta de crédito: " + valor);
+
+        } catch (IllegalArgumentException e) {
+            alertas.add("Error en retiro: " + e.getMessage());
         }
     }
 
     public List<String> getAlertas() {
         return new ArrayList<>(alertas);
+    }
+
+    private void validarTransaccion(double valor, double limiteMaximo) {
+        if (Double.isNaN(valor) || Double.isInfinite(valor)) {
+            throw new IllegalArgumentException("Entrada inválida: valor no numérico.");
+        }
+        if (valor <= 0) {
+            throw new IllegalArgumentException("El valor debe ser mayor que cero.");
+        }
+        if (valor > limiteMaximo) {
+            throw new IllegalArgumentException("El valor excede el límite permitido por transacción: " + limiteMaximo);
+        }
     }
 }
