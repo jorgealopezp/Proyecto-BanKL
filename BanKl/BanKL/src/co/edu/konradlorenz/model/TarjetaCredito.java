@@ -8,7 +8,7 @@ public class TarjetaCredito extends Cuenta {
     private double cupo;
     private List<String> alertas = new ArrayList<>();
 
-    public TarjetaCredito(int numeroCuenta, String propietario, int saldo, int numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
+    public TarjetaCredito(int numeroCuenta, String propietario, int saldo, String numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
         this.cupo = cupo;
     }

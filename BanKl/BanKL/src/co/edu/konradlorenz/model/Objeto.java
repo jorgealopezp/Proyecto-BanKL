@@ -2,31 +2,41 @@ package co.edu.konradlorenz.model;
 
 public class Objeto {
     private int id;
-    private Object objeto;
+    private String nombre;
+    private String descripcion;
 
-    public Objeto(int id, Object objeto) {
+    public Objeto(int id, String nombre, String descripcion) {
         this.id = id;
-        this.objeto = objeto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public int getId() {
         return id;
     }
 
-    public Object getObjeto() {
-        return objeto;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setObjeto(Object objeto) {
-        this.objeto = objeto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public String toString() {
-        return "Objeto{" +"id=" + id + ", objeto=" + objeto +'}';
+        return "Objeto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
     }
 }

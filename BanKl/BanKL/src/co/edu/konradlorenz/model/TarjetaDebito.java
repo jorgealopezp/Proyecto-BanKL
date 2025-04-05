@@ -10,7 +10,7 @@ public class TarjetaDebito extends Cuenta {
     public TarjetaDebito() {
     }
 
-    public TarjetaDebito(int numeroCuenta, String propietario, double saldo, int numeroTarjeta, String fechaExpiracion, int cvv) {
+    public TarjetaDebito(int numeroCuenta, String propietario, double saldo, String numeroTarjeta, String fechaExpiracion, int cvv) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
     }
 

@@ -5,14 +5,14 @@ public class Cuenta {
     private int numeroCuenta;
     private String propietario;
     private double saldo;
-    private int numeroTarjeta;
+    private String numeroTarjeta;
     private String fechaExpiracion;
     private int cvv;
 
     public Cuenta() {
     }
 
-    public Cuenta(int numeroCuenta, String propietario, double saldo, int numeroTarjeta, String fechaExpiracion, int cvv) {
+    public Cuenta(int numeroCuenta, String propietario, double saldo, String numeroTarjeta, String fechaExpiracion, int cvv) {
         this.numeroCuenta = numeroCuenta;
         this.propietario = propietario;
         this.saldo = saldo;
@@ -45,11 +45,11 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    public int getNumeroTarjeta() {
+    public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
 
-    public void setNumeroTarjeta(int numeroTarjeta) {
+    public void setNumeroTarjeta(String numeroTarjeta) {
         this.numeroTarjeta = numeroTarjeta;
     }
 
