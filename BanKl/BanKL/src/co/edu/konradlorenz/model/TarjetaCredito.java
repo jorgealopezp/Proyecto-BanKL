@@ -3,11 +3,11 @@ package co.edu.konradlorenz.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TarjetaCredito extends Cuenta {
+public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
 //Atributos
     private double cupo;
     private List<String> alertas = new ArrayList<>();
-//Constructor
+//Constructores
     public TarjetaCredito(int numeroCuenta, String propietario, int saldo, String numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
         this.cupo = cupo;
@@ -16,7 +16,7 @@ public class TarjetaCredito extends Cuenta {
     public TarjetaCredito() {
         super();
     }
-//metodos
+//Metodos
     public double getCupo() {
         return cupo;
     }
@@ -28,9 +28,9 @@ public class TarjetaCredito extends Cuenta {
     @Override
     public void consignar(double valor) {
         try {
-            validarTransaccion(valor, 30000000);
+            validarTransaccion(valor, 30000000);//Limite de 3M por transaccion.
 
-            setSaldo(getSaldo() + valor);
+            setSaldo(getSaldo() + valor);//actualizacion de saldo
             cupo += valor;
             alertas.add("Pago realizado en tarjeta de crédito: " + valor);
 
