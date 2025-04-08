@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TarjetaCredito extends Cuenta {
-
+//Atributos
     private double cupo;
     private List<String> alertas = new ArrayList<>();
-
+//Constructor
     public TarjetaCredito(int numeroCuenta, String propietario, int saldo, String numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
         this.cupo = cupo;
@@ -16,7 +16,7 @@ public class TarjetaCredito extends Cuenta {
     public TarjetaCredito() {
         super();
     }
-
+//metodos
     public double getCupo() {
         return cupo;
     }
@@ -61,14 +61,14 @@ public class TarjetaCredito extends Cuenta {
         return new ArrayList<>(alertas);
     }
 
-    private void validarTransaccion(double valor, double limiteMaximo) {
-        if (Double.isNaN(valor) || Double.isInfinite(valor)) {
+    private void validarTransaccion(double valor, double limiteMaximo) {//Metodo para la validacion de transaccion.
+        if (Double.isNaN(valor) || Double.isInfinite(valor)) {//Verifica si es un numero.
             throw new IllegalArgumentException("Entrada inválida: valor no numérico.");
         }
-        if (valor <= 0) {
+        if (valor <= 0) {//Evita que sea numeros negativos.
             throw new IllegalArgumentException("El valor debe ser mayor que cero.");
         }
-        if (valor > limiteMaximo) {
+        if (valor > limiteMaximo) {//Revisa que no sea mas del limite.
             throw new IllegalArgumentException("El valor excede el límite permitido por transacción: " + limiteMaximo);
         }
     }
