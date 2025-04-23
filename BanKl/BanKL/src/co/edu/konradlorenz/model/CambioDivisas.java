@@ -1,50 +1,38 @@
 package co.edu.konradlorenz.model;
 
 import static co.edu.konradlorenz.view.Ventana.mostrarMensaje;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
+public final class CambioDivisas {
 
-class TasaCambio {
-    String monedaOrigen;
-    String monedaDestino;
-    double tasa;
-
-    public TasaCambio(String monedaOrigen, String monedaDestino, double tasa) {
-        this.monedaOrigen = monedaOrigen;
-        this.monedaDestino = monedaDestino;
-        this.tasa = tasa;
-    }
-} 
-
-public class CambioDivisas {
-    private List<TasaCambio> tasasCambio;
+    private final Map<String, Map<String, Double>> tasas;
 
     public CambioDivisas() {
-        tasasCambio = new ArrayList<>();
-       
-        tasasCambio.add(new TasaCambio("USD", "EUR", 0.85));
-        tasasCambio.add(new TasaCambio("EUR", "USD", 1.18));
-        tasasCambio.add(new TasaCambio("USD", "COP", 4000.0));
-        tasasCambio.add(new TasaCambio("COP", "USD", 0.00025));
+        tasas = new HashMap<>();
+        agregarTasa("USD", "EUR", 0.85);
+        agregarTasa("EUR", "USD", 1.18);
+        agregarTasa("USD", "COP", 4000.0);
+        agregarTasa("COP", "USD", 0.00025);
     }
 
-    public double consultarTasa(String monedaOrigen, String monedaDestino) {
-        for (TasaCambio tasa : tasasCambio) {
-            if (tasa.monedaOrigen.equals(monedaOrigen) && tasa.monedaDestino.equals(monedaDestino)) {
-                return tasa.tasa;
-            }
+    public void agregarTasa(String origen, String destino, double tasa) {
+        tasas.computeIfAbsent(origen, k -> new HashMap<>()).put(destino, tasa);
+        tasas.computeIfAbsent(destino, k -> new HashMap<>()).put(origen, 1 / tasa);
+    }
+
+    public double consultarTasa(String origen, String destino) {
+        if (tasas.containsKey(origen) && tasas.get(origen).containsKey(destino)) {
+            return tasas.get(origen).get(destino);
         }
-        return -1.0; 
+        return 0.0;
     }
 
-    public double realizarCambio(String monedaOrigen, String monedaDestino, double cantidad) {
-        double tasa = consultarTasa(monedaOrigen, monedaDestino);
-        if (tasa == -1.0) {
-            mostrarMensaje("No hay tasa de cambio disponible para " + monedaOrigen + " a " + monedaDestino);
+    public double realizarCambio(String origen, String destino, double cantidad) {
+        double tasa = consultarTasa(origen, destino);
+        if (tasa == 0.0) {
+            mostrarMensaje("No hay tasa directa disponible entre " + origen + " y " + destino);
+            return 0.0;
         }
         return cantidad * tasa;
     }
-
-
 }
