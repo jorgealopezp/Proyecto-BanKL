@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.edu.konradlorenz.model.*;
 import co.edu.konradlorenz.view.Ventana;
+import java.util.Set;
 
 public class Control {
 
@@ -185,9 +186,57 @@ public class Control {
     }
 
     public void realizarCambioDivisas() {
-        Ventana.mostrarMensaje("\nCambio de Divisas");
-        Ventana.mostrarMensaje("En desarrollo...");
-        Ventana.mostrarMensaje("Por favor, consulte más tarde.");
+        CambioDivisas conversor = new CambioDivisas();
+        Set<String> monedasValidas = Set.of("USD", "EUR", "COP");
+
+        try {
+            Ventana.mostrarMensaje("\nBienvenido al cambio de divisas.");
+            Ventana.mostrarMensaje("Tenga en cuenta que manejamos la siguiente lista de cambio de divisas:");
+            Ventana.mostrarMensaje("Dólares (USD), Euros (EUR) y Pesos Colombianos (COP)");
+
+            String origen = Ventana.pedirString("Ingrese la moneda de origen (por ejemplo, USD): ").toUpperCase().trim();
+
+            if (!monedasValidas.contains(origen)) {
+                Ventana.mostrarMensaje("Moneda de origen no válida. Solo se permiten USD, EUR o COP.");
+                return;
+            }
+
+            String destino = Ventana.pedirString("Ingrese la moneda de destino (por ejemplo, EUR): ").toUpperCase().trim();
+
+            if (!monedasValidas.contains(destino)) {
+                Ventana.mostrarMensaje("Moneda de destino no válida. Solo se permiten USD, EUR o COP.");
+                return;
+            }
+
+            if (origen.equals(destino)) {
+                Ventana.mostrarMensaje("La moneda de origen y destino no pueden ser iguales.");
+                return;
+            }
+
+            double cantidad = Ventana.pedirDouble("Ingrese la cantidad a convertir: ");
+
+            if (cantidad <= 0) {
+                Ventana.mostrarMensaje("La cantidad debe ser mayor que cero.");
+                return;
+            }
+
+            double resultado = conversor.realizarCambio(origen, destino, cantidad);
+
+            if (resultado > 0) {
+                Ventana.mostrarMensaje("Resultado: " + cantidad + " " + origen + " equivale a " + resultado + " " + destino);
+            } else {
+                Ventana.mostrarMensaje("No fue posible realizar el cambio. Verifique las monedas ingresadas.");
+            }
+
+        } catch (NullPointerException e) {
+            Ventana.mostrarMensaje("Error: Entrada vacía no válida.");
+        } catch (NumberFormatException e) {
+            Ventana.mostrarMensaje("Error: Ingrese solo números válidos.");
+        } catch (IllegalArgumentException e) {
+            Ventana.mostrarMensaje("Error, intente nuevamente");
+        } catch (Exception e) {
+            Ventana.mostrarMensaje("Error inesperado, intente de nuevo.");
+        }
     }
 
     public void protegerValores() {

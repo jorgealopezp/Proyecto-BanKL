@@ -13,6 +13,7 @@ public final class CambioDivisas {
         agregarTasa("EUR", "USD", 1.18);
         agregarTasa("USD", "COP", 4000.0);
         agregarTasa("COP", "USD", 0.00025);
+        agregarTasa("COP", "EUR", 0.00021);
     }
 
     public void agregarTasa(String origen, String destino, double tasa) {

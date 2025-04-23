@@ -12,27 +12,28 @@ public class Ventana {
 
     public static String pedirString(String info) {
         System.out.println(info);
-        return scanner.nextLine();
+        return scanner.nextLine().trim();
     }
 
     public static int pedirEntero(String mensaje) {
         System.out.println(mensaje);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Por favor ingrese un numero valido.");
-            scanner.next();
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor ingrese un número entero válido.");
+            }
         }
-        int valorInt = scanner.nextInt();
-        return valorInt;
     }
 
     public static double pedirDouble(String mensaje) {
         System.out.println(mensaje);
-        while (!scanner.hasNextDouble()) {
-            System.out.println("Por favor ingrese un numero valido.");
-            scanner.next();
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor ingrese un número decimal válido.");
+            }
         }
-        double valorDouble = scanner.nextDouble();
-        return valorDouble;
     }
-
-} 
+}
