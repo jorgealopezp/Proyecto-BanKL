@@ -1,16 +1,17 @@
 package co.edu.konradlorenz.model;
 
 public class Objeto {
+    //ATRIBUTOS
     private int id;
     private String nombre;
     private String descripcion;
-
+    //CONSTRUCTOR
     public Objeto(int id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
+    //GETTERS Y SETTERS
     public int getId() {
         return id;
     }

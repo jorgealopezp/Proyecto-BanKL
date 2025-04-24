@@ -1,8 +1,9 @@
+
 package co.edu.konradlorenz.model;
 
 public class Alerta {
-
-    private static int contador = 0;
+    // ATRIBUTOS
+    private static int contador = 0; // Contador estático para llevar el registro de la cantidad de alertas
     private int id;
     private String tipo;
     private String descripcion;
@@ -10,12 +11,14 @@ public class Alerta {
     public Alerta() {
     }
 
+    // CONSTRUCTOR
     public Alerta(int id, String tipo, String descripcion) {
         this.id = id;
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
 
+    // GETTERS Y SETTERS
     public static int getContador() {
         return contador;
     }
@@ -24,7 +27,7 @@ public class Alerta {
         Alerta.contador = contador;
     }
 
-    public String getTipo() { 
+    public String getTipo() {
         return tipo;
     }
 
@@ -52,5 +55,4 @@ public class Alerta {
     public String toString() {
         return "Alerta{" + "id=" + id + ", tipo=" + tipo + ", descripcion=" + descripcion + '}';
     }
-
 }

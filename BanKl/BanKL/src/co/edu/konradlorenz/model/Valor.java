@@ -1,16 +1,17 @@
 package co.edu.konradlorenz.model;
 
 public class Valor {
+    //ATRIBUTOS
     private int id;
     private String nombre;
     private double valor;
-
+    //CONSTRUCTOR
     public Valor(int id, String nombre, double valor) {
         this.id = id;
         this.nombre = nombre;
         this.valor = valor;
     }
-
+    //GETTERS Y SETTERS
     public int getId() {
         return id;
     }

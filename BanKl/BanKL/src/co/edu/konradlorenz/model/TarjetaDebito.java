@@ -6,14 +6,21 @@ import java.util.List;
 public class TarjetaDebito extends Cuenta {
 
     private List<String> alertas = new ArrayList<>();
-
+    //CONSTRUCTORES
     public TarjetaDebito() {
     }
 
     public TarjetaDebito(int numeroCuenta, String propietario, double saldo, String numeroTarjeta, String fechaExpiracion, int cvv) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
     }
-
+    //GETTERS Y SETTERS
+    public List<String> getAlertas() {
+        return new ArrayList<>(alertas);
+    }
+    public void setAlertas(List<String> alertas) {
+        this.alertas = new ArrayList<>(alertas);
+    }
+    
     @Override
     public void consignar(double valor) {
         if (valor > 0) {
@@ -29,8 +36,5 @@ public class TarjetaDebito extends Cuenta {
             alertas.add("Retiro en tarjeta débito: " + valor);
         }
     }
-
-    public List<String> getAlertas() {
-        return new ArrayList<>(alertas);
-    }
+    
 }

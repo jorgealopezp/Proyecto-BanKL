@@ -1,22 +1,27 @@
+
 package co.edu.konradlorenz.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import co.edu.konradlorenz.model.*;
 import co.edu.konradlorenz.view.Ventana;
-import java.util.Set;
 
 public class Control {
 
+    // Instancias de las clases del modelo
     Cuenta objC = new Cuenta();
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
     AlertasBancarias objAB = new AlertasBancarias();
     SeguridadBancaria objSB = new SeguridadBancaria();
 
+    // Método principal que arranca el programa y muestra el menú principal
     public void run() {
         Ventana.mostrarMensaje("Bienvenido al sistema BanKL");
         int opcion = 0;
+
+        // Bucle principal del menú
         do {
             Ventana.mostrarMensaje("\nMenú Principal");
             Ventana.mostrarMensaje("1. Información de la cuenta");
@@ -34,10 +39,10 @@ public class Control {
                     continue;
                 }
 
+                // Lógica según opción seleccionada
                 switch (opcion) {
                     case 1:
                         mostrarInformacionCuenta();
-
                         break;
                     case 2:
                         administrarTarjetas();
@@ -55,17 +60,21 @@ public class Control {
                         Ventana.mostrarMensaje("Saliendo del sistema...");
                         break;
                 }
+
             } catch (Exception e) {
                 Ventana.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
             }
+
         } while (opcion != 6);
     }
 
+    // Muestra el saldo de la cuenta del usuario
     private void mostrarInformacionCuenta() {
         Ventana.mostrarMensaje("\nInformación de la Cuenta");
         Ventana.mostrarMensaje("Saldo actual: " + objC.getSaldo());
     }
 
+    // Menú para administrar tarjetas (débito y crédito)
     public void administrarTarjetas() {
         int opcion = 0;
         do {
@@ -98,6 +107,7 @@ public class Control {
         } while (opcion != 3);
     }
 
+    // Menú de operaciones con la tarjeta débito
     public void gestionarTarjetaDebito() {
         int opcion;
         do {
@@ -109,10 +119,10 @@ public class Control {
             opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1:
+                case 1: // Depositar dinero
                     double montoDeposito = Ventana.pedirDouble("Ingrese el monto a depositar: ");
                     if (montoDeposito < 0) {
-                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                        Ventana.mostrarMensaje("Monto no válido.");
                     } else {
                         objTD.consignar(montoDeposito);
                         objAB.registrarAlerta(Alerta.getContador() + 1, "Depósito",
@@ -120,12 +130,12 @@ public class Control {
                         Ventana.mostrarMensaje("Depósito realizado.");
                     }
                     break;
-                case 2:
+                case 2: // Retirar dinero
                     double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
                     if (montoRetiro < 0) {
-                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                        Ventana.mostrarMensaje("Monto no válido.");
                     } else if (montoRetiro > objTD.getSaldo()) {
-                        Ventana.mostrarMensaje("Saldo insuficiente. Por favor, ingrese un monto menor.");
+                        Ventana.mostrarMensaje("Saldo insuficiente.");
                     } else {
                         objTD.retirar(montoRetiro);
                         objAB.registrarAlerta(Alerta.getContador() + 1, "Retiro",
@@ -136,12 +146,12 @@ public class Control {
                 case 3:
                     return;
                 default:
-                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    Ventana.mostrarMensaje("Opción no válida.");
             }
         } while (opcion != 3);
-
     }
 
+    // Menú de operaciones con la tarjeta crédito
     public void gestionarTarjetaCredito() {
         int opcion;
         do {
@@ -153,10 +163,10 @@ public class Control {
             opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1:
+                case 1: // Pagar a la tarjeta
                     double montoPago = Ventana.pedirDouble("Ingrese el monto a pagar: ");
                     if (montoPago < 0) {
-                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                        Ventana.mostrarMensaje("Monto no válido.");
                     } else {
                         objTC.consignar(montoPago);
                         objAB.registrarAlerta(Alerta.getContador() + 1, "Pago",
@@ -164,12 +174,12 @@ public class Control {
                         Ventana.mostrarMensaje("Pago realizado.");
                     }
                     break;
-                case 2:
+                case 2: // Retirar crédito
                     double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
                     if (montoRetiro < 0) {
-                        Ventana.mostrarMensaje("Monto no válido. Por favor, ingrese un monto positivo.");
+                        Ventana.mostrarMensaje("Monto no válido.");
                     } else if (montoRetiro > objTC.getSaldo()) {
-                        Ventana.mostrarMensaje("Cupo disponible insuficiente. Por favor, ingrese un monto menor.");
+                        Ventana.mostrarMensaje("Cupo disponible insuficiente.");
                     } else {
                         objTC.retirar(montoRetiro);
                         objAB.registrarAlerta(Alerta.getContador() + 1, "Retiro",
@@ -180,71 +190,57 @@ public class Control {
                 case 3:
                     return;
                 default:
-                    Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
+                    Ventana.mostrarMensaje("Opción no válida.");
             }
         } while (opcion != 3);
     }
 
+    // Función que realiza un cambio de divisas entre USD, EUR y COP
     public void realizarCambioDivisas() {
         CambioDivisas conversor = new CambioDivisas();
         Set<String> monedasValidas = Set.of("USD", "EUR", "COP");
 
         try {
             Ventana.mostrarMensaje("\nBienvenido al cambio de divisas.");
-            Ventana.mostrarMensaje("Tenga en cuenta que manejamos la siguiente lista de cambio de divisas:");
-            Ventana.mostrarMensaje("Dólares (USD), Euros (EUR) y Pesos Colombianos (COP)");
+            Ventana.mostrarMensaje("Monedas disponibles: USD, EUR, COP");
 
-            String origen = Ventana.pedirString("Ingrese la moneda de origen (por ejemplo, USD): ").toUpperCase().trim();
-
+            String origen = Ventana.pedirString("Moneda de origen: ").toUpperCase().trim();
             if (!monedasValidas.contains(origen)) {
-                Ventana.mostrarMensaje("Moneda de origen no válida. Solo se permiten USD, EUR o COP.");
+                Ventana.mostrarMensaje("Moneda no válida.");
                 return;
             }
 
-            String destino = Ventana.pedirString("Ingrese la moneda de destino (por ejemplo, EUR): ").toUpperCase().trim();
-
-            if (!monedasValidas.contains(destino)) {
-                Ventana.mostrarMensaje("Moneda de destino no válida. Solo se permiten USD, EUR o COP.");
+            String destino = Ventana.pedirString("Moneda de destino: ").toUpperCase().trim();
+            if (!monedasValidas.contains(destino) || destino.equals(origen)) {
+                Ventana.mostrarMensaje("Destino no válido.");
                 return;
             }
 
-            if (origen.equals(destino)) {
-                Ventana.mostrarMensaje("La moneda de origen y destino no pueden ser iguales.");
-                return;
-            }
-
-            double cantidad = Ventana.pedirDouble("Ingrese la cantidad a convertir: ");
-
+            double cantidad = Ventana.pedirDouble("Cantidad a convertir: ");
             if (cantidad <= 0) {
                 Ventana.mostrarMensaje("La cantidad debe ser mayor que cero.");
                 return;
             }
 
             double resultado = conversor.realizarCambio(origen, destino, cantidad);
-
             if (resultado > 0) {
-                Ventana.mostrarMensaje("Resultado: " + cantidad + " " + origen + " equivale a " + resultado + " " + destino);
+                Ventana.mostrarMensaje("Resultado: " + cantidad + " " + origen + " = " + resultado + " " + destino);
             } else {
-                Ventana.mostrarMensaje("No fue posible realizar el cambio. Verifique las monedas ingresadas.");
+                Ventana.mostrarMensaje("Error al convertir.");
             }
 
-        } catch (NullPointerException e) {
-            Ventana.mostrarMensaje("Error: Entrada vacía no válida.");
-        } catch (NumberFormatException e) {
-            Ventana.mostrarMensaje("Error: Ingrese solo números válidos.");
-        } catch (IllegalArgumentException e) {
-            Ventana.mostrarMensaje("Error, intente nuevamente");
         } catch (Exception e) {
             Ventana.mostrarMensaje("Error inesperado, intente de nuevo.");
         }
     }
 
+    // Método actualmente en desarrollo
     public void protegerValores() {
         Ventana.mostrarMensaje("\nProtección de Valores");
         Ventana.mostrarMensaje("En desarrollo...");
-        Ventana.mostrarMensaje("Por favor, consulte más tarde.");
     }
 
+    // Muestra las alertas bancarias registradas
     public void verAlertas() {
         List<Alerta> alertas = objAB.revisarAlertas();
         if (alertas.isEmpty()) {

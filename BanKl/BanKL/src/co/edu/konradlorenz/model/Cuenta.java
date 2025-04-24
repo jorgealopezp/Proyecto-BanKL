@@ -1,14 +1,14 @@
 package co.edu.konradlorenz.model;
 
 public class Cuenta {
-
+    //ATRIBUTOS
     private int numeroCuenta;
     private String propietario;
     private double saldo;
     private String numeroTarjeta;
     private String fechaExpiracion;
     private int cvv;
-
+    //CONSTRUCTORES
     public Cuenta() {
     }
 
@@ -21,7 +21,7 @@ public class Cuenta {
         this.cvv = cvv;
     }
     
-
+    //GETTERS Y SETTERS
     public int getNumeroCuenta() {
         return numeroCuenta;
     }
@@ -75,7 +75,7 @@ public class Cuenta {
 
         return "Cuenta{" + "numeroCuenta=" + numeroCuenta + ", propietario=" + propietario + ", saldo=" + saldo + ", numeroTarjeta=" + numeroTarjeta + ", fechaExpiracion=" + fechaExpiracion + ", cvv=" + cvv + '}';
     }
-
+    //metodos de consignar y retirar
     public void consignar(double valor) {
         saldo += valor;
     }
