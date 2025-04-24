@@ -1,7 +1,7 @@
 package co.edu.konradlorenz.model;
 
 public class Objeto {
-    //ATRIBUTOS
+    
     private int id;
     private String nombre;
     private String descripcion;
