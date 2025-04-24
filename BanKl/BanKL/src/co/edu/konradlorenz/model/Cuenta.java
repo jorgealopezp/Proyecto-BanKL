@@ -19,7 +19,8 @@ public class Cuenta {
         this.numeroTarjeta = numeroTarjeta;
         this.fechaExpiracion = fechaExpiracion;
         this.cvv = cvv;
-    } 
+    }
+    
 
     public int getNumeroCuenta() {
         return numeroCuenta;
@@ -78,6 +79,7 @@ public class Cuenta {
     public void consignar(double valor) {
         saldo += valor;
     }
+
 
     public void retirar(double valor) {
         saldo -= valor;
