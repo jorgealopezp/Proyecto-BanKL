@@ -14,7 +14,7 @@ public class Control {
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
     AlertasBancarias objAB = new AlertasBancarias();
-    SeguridadBancaria objSB = new SeguridadBancaria();
+    
 
     // Método principal que arranca el programa y muestra el menú principal
     public void run() {
@@ -27,9 +27,9 @@ public class Control {
             Ventana.mostrarMensaje("1. Información de la cuenta");
             Ventana.mostrarMensaje("2. Información de tarjetas");
             Ventana.mostrarMensaje("3. Cambio de divisas");
-            Ventana.mostrarMensaje("4. Protección de valores");
-            Ventana.mostrarMensaje("5. Ver alertas");
-            Ventana.mostrarMensaje("6. Salir");
+            Ventana.mostrarMensaje("4.Ver alertas ");
+            Ventana.mostrarMensaje("5.Salir ");
+            
 
             try {
                 opcion = Ventana.pedirEntero("Seleccione una opción: ");
@@ -51,14 +51,12 @@ public class Control {
                         realizarCambioDivisas();
                         break;
                     case 4:
-                        protegerValores();
-                        break;
-                    case 5:
                         verAlertas();
                         break;
-                    case 6:
+                    case 5:
                         Ventana.mostrarMensaje("Saliendo del sistema...");
                         break;
+                   
                 }
 
             } catch (Exception e) {
@@ -234,11 +232,7 @@ public class Control {
         }
     }
 
-    // Método actualmente en desarrollo
-    public void protegerValores() {
-        Ventana.mostrarMensaje("\nProtección de Valores");
-        Ventana.mostrarMensaje("En desarrollo...");
-    }
+    
 
     // Muestra las alertas bancarias registradas
     public void verAlertas() {
