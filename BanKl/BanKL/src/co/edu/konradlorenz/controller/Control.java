@@ -4,7 +4,10 @@ package co.edu.konradlorenz.controller;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.SwingUtilities;
+
 import co.edu.konradlorenz.model.*;
+import co.edu.konradlorenz.view.HomePage;
 import co.edu.konradlorenz.view.Ventana;
 
 public class Control {
@@ -14,15 +17,22 @@ public class Control {
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
     AlertasBancarias objAB = new AlertasBancarias();
+    CambioDivisas objCD = new CambioDivisas();
+    HomePage objHP = new HomePage();
+
     
 
     // Método principal que arranca el programa y muestra el menú principal
     public void run() {
+       
         Ventana.mostrarMensaje("Bienvenido al sistema BanKL");
         int opcion = 0;
 
         // Bucle principal del menú
         do {
+             SwingUtilities.invokeLater(() -> {
+            new HomePage().setVisible(true);
+        });
             Ventana.mostrarMensaje("\nMenú Principal");
             Ventana.mostrarMensaje("1. Información de la cuenta");
             Ventana.mostrarMensaje("2. Información de tarjetas");
