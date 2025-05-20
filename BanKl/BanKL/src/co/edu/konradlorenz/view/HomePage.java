@@ -12,10 +12,8 @@ public class HomePage extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Encabezado
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
-
         JLabel logo = new JLabel("<html><div style='font-family:sans-serif;'>"
                 + "<span style='font-size:30px;'>"
                 + "<b style='color:#001F4E;'>Ban</b><b style='color:#FFFFFF;'>KL</b>"
@@ -32,15 +30,12 @@ public class HomePage extends JFrame {
         header.add(logo, BorderLayout.WEST);
         header.add(buttons, BorderLayout.EAST);
 
-        // Contenido principal
         JPanel center = new JPanel(new GridLayout(1, 3, 20, 0));
         center.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
-
         center.add(createCard("¿Quienes somos?", "Lorem ipsum dolor sit amet..."));
         center.add(createCard("Nuestros productos", "Lorem ipsum dolor sit amet..."));
         center.add(createCard("Beneficios", "Lorem ipsum dolor sit amet..."));
 
-        // Pie de página
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(220, 215, 210));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -52,10 +47,13 @@ public class HomePage extends JFrame {
         add(center, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
-        // Acción del botón de registro
         registerButton.addActionListener((ActionEvent e) -> {
-            dispose(); // cerrar la ventana actual
-            new Registro().setVisible(true); // abrir la nueva
+            dispose();
+            new Registro().setVisible(true);
+        });
+        loginButton.addActionListener((ActionEvent e) -> {
+            dispose();
+            new Ingreso().setVisible(true);
         });
     }
 

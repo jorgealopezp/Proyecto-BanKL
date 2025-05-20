@@ -11,7 +11,6 @@ public class Registro extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Encabezado
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
         JLabel logo = new JLabel("<html><div style='font-family:sans-serif;'>"
@@ -22,7 +21,6 @@ public class Registro extends JFrame {
         logo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         header.add(logo, BorderLayout.WEST);
 
-        // Formulario
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBorder(BorderFactory.createEmptyBorder(60, 300, 60, 300));
@@ -38,7 +36,6 @@ public class Registro extends JFrame {
         formPanel.add(Box.createVerticalStrut(20));
         formPanel.add(registerButton);
 
-        // Pie de página
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(220, 215, 210));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -55,6 +52,7 @@ public class Registro extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(labelText);
         JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(250, 30));
         panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         panel.add(label, BorderLayout.NORTH);
         panel.add(textField, BorderLayout.CENTER);
