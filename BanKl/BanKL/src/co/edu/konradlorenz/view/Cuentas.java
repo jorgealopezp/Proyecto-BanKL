@@ -1,13 +1,15 @@
 package co.edu.konradlorenz.view;
 
+import co.edu.konradlorenz.model.Registro;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Cuentas extends JFrame {
 
-    public Cuentas() {
+    public Cuentas(Registro registro) {
         setTitle("Cuentas - BanKL");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Para no cerrar toda la app
         setSize(950, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -17,7 +19,7 @@ public class Cuentas extends JFrame {
         header.setBackground(new Color(220, 214, 207));
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JLabel logoLabel = new JLabel("<html><span style='font-size:28px; font-weight:bold; color:#001f4d;'>Ban</span><span style='font-size:28px; font-weight:bold;'>KL</span><br>Innovación financiera para tu futuro</html>");
+        JLabel logoLabel = new JLabel("<html><span style='font-size:28px; font-weight:bold; color:#001f4d;'>Ban</span><span style='font-size:28px; font-weight:bold; color:#000;'>KL</span><br>Innovación financiera para tu futuro</html>");
         header.add(logoLabel, BorderLayout.WEST);
 
         JLabel welcomeLabel = new JLabel("<html><div style='text-align:right;'>Hola,<br>Bienvenido</div></html>");
@@ -39,7 +41,7 @@ public class Cuentas extends JFrame {
         cuentasPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         cuentasPanel.setBackground(Color.WHITE);
 
-        // Panel Cuenta de Ahorros
+        // Cuenta de Ahorros
         JPanel ahorroPanel = new JPanel(new BorderLayout());
         ahorroPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         ahorroPanel.setBackground(Color.WHITE);
@@ -67,7 +69,7 @@ public class Cuentas extends JFrame {
         ahorroPanel.add(botonesAhorro, BorderLayout.SOUTH);
         cuentasPanel.add(ahorroPanel);
 
-        // Panel Cuenta de Crédito
+        // Cuenta de Crédito
         JPanel creditoPanel = new JPanel(new BorderLayout());
         creditoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         creditoPanel.setBackground(Color.WHITE);
@@ -97,10 +99,19 @@ public class Cuentas extends JFrame {
 
         add(cuentasPanel, BorderLayout.CENTER);
 
-        // Botón "Cambiar tarjeta"
+        // Botones inferior: Cambiar tarjeta y Volver
         JButton btnCambiarTarjeta = new JButton("Cambiar tarjeta");
-        JPanel cambiarPanel = new JPanel();
+        JButton btnVolver = new JButton("Volver");
+
+        JPanel cambiarPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         cambiarPanel.add(btnCambiarTarjeta);
+        cambiarPanel.add(btnVolver);
+
+        btnVolver.addActionListener(e -> {
+            dispose();
+            new IngresoCliente(registro).setVisible(true);
+        });
+
         add(cambiarPanel, BorderLayout.AFTER_LAST_LINE);
 
         // Footer
@@ -118,5 +129,4 @@ public class Cuentas extends JFrame {
 
         add(footer, BorderLayout.SOUTH);
     }
-
 }

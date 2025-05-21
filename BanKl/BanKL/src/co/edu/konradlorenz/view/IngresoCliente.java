@@ -23,7 +23,8 @@ public class IngresoCliente extends JFrame {
         header.setBackground(new Color(220, 214, 207));
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JLabel logoLabel = new JLabel("<html><span style='font-size:28px; font-weight:bold; color:#001f4d;'>Ban</span><span style='font-size:28px; font-weight:bold;'>KL</span><br>Innovación financiera para tu futuro</html>");
+        JLabel logoLabel = new JLabel(
+                "<html><span style='font-size:28px; font-weight:bold; color:#001f4d;'>Ban</span><span style='font-size:28px; font-weight:bold;color:#ffffff'>KL</span><br>Innovación financiera para tu futuro</html>");
         header.add(logoLabel, BorderLayout.WEST);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
@@ -34,7 +35,7 @@ public class IngresoCliente extends JFrame {
 
         logoutButton.addActionListener(e -> {
             dispose();
-            new HomePage(registro).setVisible(true); // ← error aquí
+            new HomePage(registro).setVisible(true);
         });
 
         rightPanel.add(welcomeLabel, BorderLayout.CENTER);
@@ -47,21 +48,46 @@ public class IngresoCliente extends JFrame {
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // Botones
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
-        String[] botones = {"Cuentas", "Divisas", "Alertas"};
+        String[] botones = { "Cuentas", "Divisas", "Alertas" };
         for (String txt : botones) {
             JButton btn = new JButton(txt);
-            btn.setPreferredSize(new Dimension(100, 40));
+            btn.setPreferredSize(new Dimension(120, 40));
             btn.setBackground(new Color(100, 149, 237));
             btn.setForeground(Color.WHITE);
             btn.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(Color.BLACK, 1),
                     BorderFactory.createEmptyBorder(5, 15, 5, 15)));
             btn.setFocusPainted(false);
+
+            switch (txt) {
+                case "Cuentas":
+                    btn.addActionListener(e -> {
+                        new Cuentas(registro).setVisible(true);
+                        dispose();
+                    });
+                    break;
+                case "Divisas":
+                    btn.addActionListener(e -> {
+                        new CambioDeDivisasV(registro).setVisible(true); // ← CLASE CORRECTA
+                        dispose();
+                    });
+                    break;
+                case "Alertas":
+                    btn.addActionListener(e -> {
+                        new AlertasV(registro).setVisible(true);
+                        dispose();
+                    });
+                    break;
+            }
+
             buttonPanel.add(btn);
         }
 
-        ImageIcon iconoOriginal = new ImageIcon("E:/Programacion/tecnicasDeProgramacion/BanKL/Proyecto-BanKL/Imagenes proyecto/app.png");
+        // Imagen
+        ImageIcon iconoOriginal = new ImageIcon(
+                "E:/Programacion/tecnicasDeProgramacion/BanKL/Proyecto-BanKL/Imagenes proyecto/app.png");
         Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
         ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
         JLabel imageLabel = new JLabel(iconoEscalado, SwingConstants.CENTER);
@@ -75,8 +101,10 @@ public class IngresoCliente extends JFrame {
         footer.setBackground(new Color(220, 214, 207));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        footer.add(new JLabel("<html><b>CONTÁCTANOS</b><br>1234565465<br><br><b>UBICACIÓN</b><br>Calle Falsa 123</html>"));
-        footer.add(new JLabel("<html><b>TRABAJA CON NOSOTROS</b><br>Puestos disponibles<br><br><b>RECLAMOS O SUGERENCIAS</b></html>"));
+        footer.add(
+                new JLabel("<html><b>CONTÁCTANOS</b><br>1234565465<br><br><b>UBICACIÓN</b><br>Calle Falsa 123</html>"));
+        footer.add(new JLabel(
+                "<html><b>TRABAJA CON NOSOTROS</b><br>Puestos disponibles<br><br><b>RECLAMOS O SUGERENCIAS</b></html>"));
         footer.add(new JLabel("<html><b>VIGILADOS POR</b><br>LOREM IPSUM DOLOR SIT AMET</html>"));
 
         add(footer, BorderLayout.SOUTH);
