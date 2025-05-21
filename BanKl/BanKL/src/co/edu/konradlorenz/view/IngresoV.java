@@ -1,6 +1,6 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.ClienteNatural;
+import co.edu.konradlorenz.model.Ingreso;
 import co.edu.konradlorenz.model.Registro;
 
 import javax.swing.*;
@@ -8,8 +8,8 @@ import java.awt.*;
 
 public class IngresoV extends JFrame {
     private Registro registro;
-    private JTextField campoDocumento;
-    private JPasswordField campoClave;
+    private JTextField documentoField;
+    private JPasswordField claveField;
 
     public IngresoV(Registro registro) {
         this.registro = registro;
@@ -31,22 +31,18 @@ public class IngresoV extends JFrame {
         logo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         header.add(logo, BorderLayout.WEST);
 
-        // Form
+        // Formulario
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBorder(BorderFactory.createEmptyBorder(60, 300, 60, 300));
 
-        campoDocumento = new JTextField();
-        campoClave = new JPasswordField();
+        formPanel.add(createInput("Número de documento*", true));
+        formPanel.add(createInput("Clave digital*", false));
 
-        addLabeledField(formPanel, "Número de documento*", campoDocumento);
-        addLabeledField(formPanel, "Clave digital*", campoClave);
-
-        JButton loginButton = new JButton("Ingresar");
+        JButton loginButton = new JButton("Ingresa");
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginButton.setPreferredSize(new Dimension(150, 40));
         loginButton.setMaximumSize(new Dimension(150, 40));
-        loginButton.addActionListener(e -> validarIngreso());
-
         formPanel.add(Box.createVerticalStrut(20));
         formPanel.add(loginButton);
 
@@ -61,34 +57,76 @@ public class IngresoV extends JFrame {
         add(header, BorderLayout.NORTH);
         add(formPanel, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
+
+        // Acción del botón
+        loginButton.addActionListener(e -> {
+            String doc = documentoField.getText();
+            String clave = new String(claveField.getPassword());
+
+            Ingreso ingreso = new Ingreso(registro);
+
+            if (registro.buscarClientePorDocumento(doc) == null) {
+                int opcion = JOptionPane.showOptionDialog(
+                        this,
+                        "No encontramos un cliente con ese documento. ¿Deseas registrarte?",
+                        "Usuario no registrado",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        new Object[]{"Registrarse", "Volver"},
+                        "Registrarse"
+                );
+
+                if (opcion == JOptionPane.YES_OPTION) {
+                    dispose();
+                    new RegistroV(registro).setVisible(true);
+                } else {
+                    documentoField.setText("");
+                    claveField.setText("");
+                }
+            } else if (ingreso.autenticar(doc, clave)) {
+                dispose();
+                new IngresoCliente(registro).setVisible(true);
+            } else {
+                int opcion = JOptionPane.showOptionDialog(
+                        this,
+                        "La clave es incorrecta. ¿Qué deseas hacer?",
+                        "Error de clave",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        new Object[]{"Volver a intentar", "Cancelar"},
+                        "Volver a intentar"
+                );
+
+                if (opcion == JOptionPane.YES_OPTION) {
+                    claveField.setText("");
+                } else {
+                    documentoField.setText("");
+                    claveField.setText("");
+                }
+            }
+        });
     }
 
-    private void addLabeledField(JPanel panel, String labelText, JComponent field) {
+    private JPanel createInput(String labelText, boolean isDocumento) {
+        JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(labelText);
-        field.setMaximumSize(new Dimension(250, 30));
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(label);
-        panel.add(field);
-        panel.add(Box.createVerticalStrut(10));
-    }
+        JComponent input;
 
-    private void validarIngreso() {
-        String documento = campoDocumento.getText().trim();
-        String clave = new String(campoClave.getPassword()).trim();
-
-        if (documento.isEmpty() || clave.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        ClienteNatural cliente = registro.buscarClientePorDocumento(documento);
-        if (cliente != null && cliente.getContraseña().equals(clave)) {
-            JOptionPane.showMessageDialog(this, "Ingreso exitoso.");
-            dispose();
-            new HomePage(registro).setVisible(true);
+        if (isDocumento) {
+            documentoField = new JTextField();
+            documentoField.setPreferredSize(new Dimension(250, 30));
+            input = documentoField;
         } else {
-            JOptionPane.showMessageDialog(this, "Documento o clave incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+            claveField = new JPasswordField();
+            claveField.setPreferredSize(new Dimension(250, 30));
+            input = claveField;
         }
+
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(input, BorderLayout.CENTER);
+        return panel;
     }
 }
-
