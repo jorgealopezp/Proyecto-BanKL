@@ -1,17 +1,34 @@
 package co.edu.konradlorenz.view;
 
+import co.edu.konradlorenz.model.Registro;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class HomePage extends JFrame {
+    private Registro registro;
+
+    // Constructor por defecto
     public HomePage() {
+        this(new Registro());
+    }
+
+    // Constructor con Registro existente
+    public HomePage(Registro registro) {
+        this.registro = registro != null ? registro : new Registro();
+        initComponents();
+        setVisible(true);
+    }
+
+    private void initComponents() {
         setTitle("BanKL - Inicio");
         setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
+        // HEADER
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
         JLabel logo = new JLabel("<html><div style='font-family:sans-serif;'>"
@@ -27,33 +44,39 @@ public class HomePage extends JFrame {
         JButton registerButton = new JButton("Regístrate");
         buttons.add(loginButton);
         buttons.add(registerButton);
+
         header.add(logo, BorderLayout.WEST);
         header.add(buttons, BorderLayout.EAST);
 
+        // CENTRO
         JPanel center = new JPanel(new GridLayout(1, 3, 20, 0));
         center.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
-        center.add(createCard("¿Quienes somos?", "Lorem ipsum dolor sit amet..."));
+        center.add(createCard("¿Quiénes somos?", "Lorem ipsum dolor sit amet..."));
         center.add(createCard("Nuestros productos", "Lorem ipsum dolor sit amet..."));
         center.add(createCard("Beneficios", "Lorem ipsum dolor sit amet..."));
 
+        // FOOTER
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(220, 215, 210));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        footer.add(new JLabel("<html><b>Contactanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>"));
+        footer.add(new JLabel("<html><b>Contáctanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>"));
         footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br>Reclamos o Sugerencias</center></html>", SwingConstants.CENTER));
         footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</center></html>", SwingConstants.RIGHT));
 
+        // AGREGAR A FRAME
         add(header, BorderLayout.NORTH);
         add(center, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
+        // LISTENERS
         registerButton.addActionListener((ActionEvent e) -> {
             dispose();
-            new Registro().setVisible(true);
+            new RegistroV(registro).setVisible(true);
         });
+
         loginButton.addActionListener((ActionEvent e) -> {
             dispose();
-            new Ingreso().setVisible(true);
+            new IngresoV(registro).setVisible(true);
         });
     }
 
@@ -69,10 +92,10 @@ public class HomePage extends JFrame {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
-        textArea.setFont(new Font("SansSerif", Font.BOLD, 11));
+        textArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
         panel.add(titleLabel, BorderLayout.NORTH);
-        panel.add(textArea, BorderLayout.CENTER);
+        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         return panel;
     }

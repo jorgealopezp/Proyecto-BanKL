@@ -16,13 +16,15 @@ public abstract class Cliente {
     protected String usuarioIS;
     protected String contraseña;
     protected int pinSeguridad;
+
     // CONSTRUCTORES
     public Cliente() {
         this.cuentas = new ArrayList<>();
+        generarPinSeguridad(); // Asegura que cada cliente tenga un pin
     }
 
     public Cliente(String nombres, String apellidos, String id, String direccion, int telefono, String email,
-            List<Cuenta> cuentas, String usuarioIS, String contraseña) {
+                   List<Cuenta> cuentas, String usuarioIS, String contraseña) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.id = id;
@@ -32,7 +34,7 @@ public abstract class Cliente {
         this.cuentas = cuentas != null ? cuentas : new ArrayList<>();
         this.usuarioIS = usuarioIS;
         this.contraseña = contraseña;
-
+        generarPinSeguridad(); // PIN aleatorio al crear
     }
 
     // GETTERS Y SETTERS
@@ -134,13 +136,11 @@ public abstract class Cliente {
 
     // Método que genera un PIN de seguridad aleatorio de 4 dígitos
     public void generarPinSeguridad() {
-        this.pinSeguridad = new Random().nextInt(9000) + 1000;
+        this.pinSeguridad = new Random().nextInt(9000) + 1000; // de 1000 a 9999
     }
 
-    // Método abstracto para registrar un cliente
+    // MÉTODOS ABSTRACTOS
     public abstract void registrarCliente();
-
-    // Método abstracto para iniciar
 
     public abstract boolean iniciarSesion(String usuario, String contraseña, int pin);
 }
