@@ -61,9 +61,10 @@ public class IngresoCliente extends JFrame {
             buttonPanel.add(btn);
         }
 
-        JLabel imageLabel = new JLabel("Imagen", SwingConstants.CENTER);
-        imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        imageLabel.setPreferredSize(new Dimension(500, 200));
+        ImageIcon iconoOriginal = new ImageIcon("E:/Programacion/tecnicasDeProgramacion/BanKL/Proyecto-BanKL/Imagenes proyecto/app.png");
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
+        ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+        JLabel imageLabel = new JLabel(iconoEscalado, SwingConstants.CENTER);
 
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
         centerPanel.add(imageLabel, BorderLayout.CENTER);
