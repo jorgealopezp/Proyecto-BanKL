@@ -3,11 +3,10 @@ package co.edu.konradlorenz.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
-//Atributos
+public class TarjetaCredito extends Cuenta {
     private double cupo;
     private List<String> alertas = new ArrayList<>();
-//Constructores
+
     public TarjetaCredito(int numeroCuenta, String propietario, int saldo, String numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
         this.cupo = cupo;
@@ -16,7 +15,7 @@ public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
     public TarjetaCredito() {
         super();
     }
-//Metodos
+
     public double getCupo() {
         return cupo;
     }
@@ -28,9 +27,9 @@ public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
     @Override
     public void consignar(double valor) {
         try {
-            validarTransaccion(valor, 30000000);//Limite de 3M por transaccion.
+            validarTransaccion(valor, 3000000); // Límite de 3M por transacción
 
-            setSaldo(getSaldo() + valor);//actualizacion de saldo
+            setSaldo(getSaldo() + valor);
             cupo += valor;
             alertas.add("Pago realizado en tarjeta de crédito: " + valor);
 
@@ -40,9 +39,9 @@ public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
     }
 
     @Override
-    public void retirar(double valor) {
+    public boolean retirar(double valor) {
         try {
-            validarTransaccion(valor, 3000000); 
+            validarTransaccion(valor, 3000000); // Límite de 3M
 
             if (valor > cupo) {
                 throw new IllegalArgumentException("El valor excede el cupo disponible.");
@@ -51,9 +50,11 @@ public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
             setSaldo(getSaldo() - valor);
             cupo -= valor;
             alertas.add("Avance en efectivo de tarjeta de crédito: " + valor);
+            return true;
 
         } catch (IllegalArgumentException e) {
             alertas.add("Error en retiro: " + e.getMessage());
+            return false;
         }
     }
 
@@ -61,14 +62,14 @@ public class TarjetaCredito extends Cuenta {//Hereda de Cuenta
         return new ArrayList<>(alertas);
     }
 
-    private void validarTransaccion(double valor, double limiteMaximo) {//Metodo para la validacion de transaccion.
-        if (Double.isNaN(valor) || Double.isInfinite(valor)) {//Verifica si es un numero.
+    private void validarTransaccion(double valor, double limiteMaximo) {
+        if (Double.isNaN(valor) || Double.isInfinite(valor)) {
             throw new IllegalArgumentException("Entrada inválida: valor no numérico.");
         }
-        if (valor <= 0) {//Evita que sea numeros negativos.
+        if (valor <= 0) {
             throw new IllegalArgumentException("El valor debe ser mayor que cero.");
         }
-        if (valor > limiteMaximo) {//Revisa que no sea mas del limite.
+        if (valor > limiteMaximo) {
             throw new IllegalArgumentException("El valor excede el límite permitido por transacción: " + limiteMaximo);
         }
     }

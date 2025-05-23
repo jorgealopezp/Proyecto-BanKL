@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Registro {
     private List<ClienteNatural> clientes;
+    private ClienteNatural clienteAutenticado;
 
     public Registro() {
         clientes = new ArrayList<>();
@@ -17,7 +18,6 @@ public class Registro {
     public void setClientes(List<ClienteNatural> clientes) {
         this.clientes = clientes;
     }
-    
 
     public void agregarCliente(ClienteNatural cliente) {
         clientes.add(cliente);
@@ -30,5 +30,13 @@ public class Registro {
             }
         }
         return null;
+    }
+
+    public void setClienteAutenticado(ClienteNatural cliente) {
+        this.clienteAutenticado = cliente;
+    }
+
+    public ClienteNatural getClienteAutenticado() {
+        return clienteAutenticado;
     }
 }

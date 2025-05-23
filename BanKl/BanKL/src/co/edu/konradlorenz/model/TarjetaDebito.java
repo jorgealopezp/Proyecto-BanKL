@@ -6,21 +6,21 @@ import java.util.List;
 public class TarjetaDebito extends Cuenta {
 
     private List<String> alertas = new ArrayList<>();
-    //CONSTRUCTORES
-    public TarjetaDebito() {
-    }
+
+    public TarjetaDebito() {}
 
     public TarjetaDebito(int numeroCuenta, String propietario, double saldo, String numeroTarjeta, String fechaExpiracion, int cvv) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
     }
-    //GETTERS Y SETTERS
+
     public List<String> getAlertas() {
         return new ArrayList<>(alertas);
     }
+
     public void setAlertas(List<String> alertas) {
         this.alertas = new ArrayList<>(alertas);
     }
-    
+
     @Override
     public void consignar(double valor) {
         if (valor > 0) {
@@ -28,13 +28,28 @@ public class TarjetaDebito extends Cuenta {
             alertas.add("Depósito en tarjeta débito: " + valor);
         }
     }
- 
+
     @Override
-    public void retirar(double valor) {
-        if (valor > 0 && valor <= getSaldo()) {
-            setSaldo(getSaldo() - valor);
-            alertas.add("Retiro en tarjeta débito: " + valor);
-        }
+    public boolean retirar(double valor) {
+    if (valor > 0 && valor <= getSaldo()) {
+        setSaldo(getSaldo() - valor);
+        alertas.add("Retiro en tarjeta débito: " + valor);
+        return true;
+    } else {
+        alertas.add("Intento de retiro fallido: fondos insuficientes o monto inválido.");
+        return false;
     }
-    
 }
+
+   public boolean realizarPago(double valor) {
+    if (valor > 0 && valor <= getSaldo()) {
+        setSaldo(getSaldo() - valor);
+        alertas.add("Pago realizado con tarjeta débito: " + valor);
+        return true;
+    } else {
+        alertas.add("Intento de pago fallido: fondos insuficientes o monto inválido.");
+        return false;
+    }
+}
+}
+

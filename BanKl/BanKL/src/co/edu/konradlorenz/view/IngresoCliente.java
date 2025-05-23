@@ -1,6 +1,6 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.Registro;
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class IngresoCliente extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Encabezado
+        // === HEADER ===
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 214, 207));
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -41,62 +41,66 @@ public class IngresoCliente extends JFrame {
         rightPanel.add(welcomeLabel, BorderLayout.CENTER);
         rightPanel.add(logoutButton, BorderLayout.EAST);
         header.add(rightPanel, BorderLayout.EAST);
+
         add(header, BorderLayout.NORTH);
 
-        // Centro
-        JPanel centerPanel = new JPanel(new BorderLayout());
+        // === CENTRO ===
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Botones
+        // Botones: Cuentas, Divisas, Alertas
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
-        String[] botones = { "Cuentas", "Divisas", "Alertas" };
-        for (String txt : botones) {
-            JButton btn = new JButton(txt);
-            btn.setPreferredSize(new Dimension(120, 40));
-            btn.setBackground(new Color(100, 149, 237));
-            btn.setForeground(Color.WHITE);
-            btn.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(Color.BLACK, 1),
-                    BorderFactory.createEmptyBorder(5, 15, 5, 15)));
-            btn.setFocusPainted(false);
+        JButton cuentasBtn = new JButton("Cuentas");
+        JButton divisasBtn = new JButton("Divisas");
+        JButton alertasBtn = new JButton("Alertas");
 
-            switch (txt) {
-                case "Cuentas":
-                    btn.addActionListener(e -> {
-                        new Cuentas(registro).setVisible(true);
-                        dispose();
-                    });
-                    break;
-                case "Divisas":
-                    btn.addActionListener(e -> {
-                        new CambioDeDivisasV(registro).setVisible(true); // ← CLASE CORRECTA
-                        dispose();
-                    });
-                    break;
-                case "Alertas":
-                    btn.addActionListener(e -> {
-                        new AlertasV(registro).setVisible(true);
-                        dispose();
-                    });
-                    break;
-            }
+        // Estilo botones
+        estilizarBoton(cuentasBtn);
+        estilizarBoton(divisasBtn);
+        estilizarBoton(alertasBtn);
 
-            buttonPanel.add(btn);
+        cuentasBtn.addActionListener(e -> {
+            new Cuentas(registro).setVisible(true);
+            dispose();
+        });
+
+        divisasBtn.addActionListener(e -> {
+            new CambioDeDivisasV(registro).setVisible(true);
+            dispose();
+        });
+
+        alertasBtn.addActionListener(e -> {
+            new AlertasV(registro).setVisible(true);
+            dispose();
+        });
+
+        buttonPanel.add(cuentasBtn);
+        buttonPanel.add(divisasBtn);
+        buttonPanel.add(alertasBtn);
+
+        // Imagen decorativa centrada
+        JPanel imagenPanel = new JPanel(new BorderLayout());
+        imagenPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        imagenPanel.setPreferredSize(new Dimension(500, 200));
+
+        JLabel imageLabel;
+        try {
+            ImageIcon iconoOriginal = new ImageIcon("E:/Programacion/tecnicasDeProgramacion/BanKL/Proyecto-BanKL/Imagenes proyecto/app.png");
+            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
+            imageLabel = new JLabel(new ImageIcon(imagenEscalada), SwingConstants.CENTER);
+        } catch (Exception ex) {
+            imageLabel = new JLabel("Imagen", SwingConstants.CENTER);
         }
-
-        // Imagen
-        ImageIcon iconoOriginal = new ImageIcon(
-                "E:/Programacion/tecnicasDeProgramacion/BanKL/Proyecto-BanKL/Imagenes proyecto/app.png");
-        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(500, 200, Image.SCALE_SMOOTH);
-        ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
-        JLabel imageLabel = new JLabel(iconoEscalado, SwingConstants.CENTER);
+        imagenPanel.add(imageLabel, BorderLayout.CENTER);
 
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
-        centerPanel.add(imageLabel, BorderLayout.CENTER);
+        centerPanel.add(imagenPanel, BorderLayout.CENTER);
+
         add(centerPanel, BorderLayout.CENTER);
 
-        // Footer
+        // === FOOTER ===
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(220, 214, 207));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -108,5 +112,14 @@ public class IngresoCliente extends JFrame {
         footer.add(new JLabel("<html><b>VIGILADOS POR</b><br>LOREM IPSUM DOLOR SIT AMET</html>"));
 
         add(footer, BorderLayout.SOUTH);
+    }
+
+    private void estilizarBoton(JButton boton) {
+        boton.setPreferredSize(new Dimension(120, 40));
+        boton.setBackground(new Color(108, 160, 220));
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
     }
 }
