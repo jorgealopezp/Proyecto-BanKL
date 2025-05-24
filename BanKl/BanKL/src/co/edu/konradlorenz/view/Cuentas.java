@@ -1,20 +1,25 @@
 package co.edu.konradlorenz.view;
-import co.edu.konradlorenz.model.Registro;
+
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 
 public class Cuentas extends JFrame {
+    private Registro registro;
 
     public Cuentas(Registro registro) {
-        setTitle("Cuentas");
+        this.registro = registro;
+
+        setTitle("Cuentas del Cliente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 500);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header superior con logo
+        // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
 
@@ -28,85 +33,111 @@ public class Cuentas extends JFrame {
         add(header, BorderLayout.NORTH);
 
         // Panel central con cuentas
-        JPanel centro = new JPanel(new GridLayout(1, 2, 20, 0));
-        centro.setBorder(new EmptyBorder(20, 20, 20, 20));
+        JPanel centro = new JPanel();
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
         centro.setBackground(Color.WHITE);
+        centro.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        centro.add(crearPanelCuenta("Cuenta de ahorros", "13214564", "0.00", "", "1234", "12/24", "Ingresar", "Retirar"));
-        centro.add(crearPanelCuenta("Cuenta de crédito", "13214564", "0.00", "200.00", "1234", "12/24", "Pagar", "Retirar"));
+        ClienteNatural cliente = registro.getClienteAutenticado();
 
-        add(centro, BorderLayout.CENTER);
+        if (cliente != null && cliente.getCuentas() != null) {
+            List<Cuenta> cuentas = cliente.getCuentas();
+            for (Cuenta cuenta : cuentas) {
+                if (cuenta instanceof TarjetaDebito debito) {
+                    centro.add(crearPanelCuenta(
+                            "Cuenta de Ahorros",
+                            debito.getNumeroTarjeta(),
+                            String.format("%.2f", debito.getSaldo()),
+                            "", 
+                            debito.getFechaExpiracion(),
+                            "Ingresar",
+                            "Retirar"));
+                } else if (cuenta instanceof TarjetaCredito credito) {
+                    centro.add(crearPanelCuenta(
+                            "Tarjeta de Crédito",
+                            credito.getNumeroTarjeta(),
+                            String.format("%.2f", credito.getSaldo()), // deuda
+                            String.format("%.2f", credito.getCupo() - credito.getSaldo()),
+                            credito.getFechaExpiracion(),
+                            "Pagar",
+                            "Avance"));
+                }
+                centro.add(Box.createVerticalStrut(20));
+            }
+        } else {
+            JLabel error = new JLabel("No hay cliente autenticado o no tiene cuentas.");
+            error.setForeground(Color.RED);
+            centro.add(error);
+        }
 
-        // Panel inferior con botones generales
-        JPanel inferior = new JPanel();
-        inferior.setBorder(new EmptyBorder(10, 10, 10, 10));
-        inferior.setBackground(Color.WHITE);
+        JScrollPane scrollPane = new JScrollPane(centro);
+        add(scrollPane, BorderLayout.CENTER);
 
-        JButton cambiarBtn = new JButton("Cambiar tarjeta");
+        // Footer
+        JPanel footer = new JPanel();
+        footer.setBackground(Color.WHITE);
         JButton volverBtn = new JButton("Volver");
-        estilizarBoton(cambiarBtn);
-        estilizarBoton(volverBtn);
-
-        inferior.add(cambiarBtn);
-        inferior.add(volverBtn);
-        add(inferior, BorderLayout.SOUTH);
+        volverBtn.addActionListener(e -> {
+            dispose();
+            new IngresoCliente(registro).setVisible(true);
+        });
+        footer.add(volverBtn);
+        add(footer, BorderLayout.SOUTH);
     }
 
-    private JPanel crearPanelCuenta(String titulo, String numero, String saldoODuuda, String disponible, String ult4Digitos, String vencimiento, String boton1, String boton2) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+    private JPanel crearPanelCuenta(String tipoCuenta, String numeroTarjeta, String saldoODuuda, String disponible,
+                                    String vencimiento, String btn1, String btn2) {
+        JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(new Color(245, 245, 245));
+        panel.setMaximumSize(new Dimension(700, 180));
 
-        JLabel tituloLabel = new JLabel(titulo, SwingConstants.CENTER);
+        JLabel tituloLabel = new JLabel(tipoCuenta, SwingConstants.CENTER);
         tituloLabel.setOpaque(true);
-        tituloLabel.setBackground(new Color(0x4177C5));
+        tituloLabel.setBackground(new Color(65, 119, 197));
         tituloLabel.setForeground(Color.WHITE);
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
         tituloLabel.setPreferredSize(new Dimension(panel.getWidth(), 30));
         panel.add(tituloLabel, BorderLayout.NORTH);
 
-        String htmlDatos = "<html><div style='font-size:13px; padding: 10px;'>"
-                + "<b>Número:</b> " + numero + "<br>";
+        String info = "<html><div style='padding:10px;'>"
+                + "<b>Número:</b> " + numeroTarjeta + "<br>"
+                + (tipoCuenta.contains("Crédito") ? "<b>Deuda:</b> $" : "<b>Saldo:</b> $") + saldoODuuda + "<br>";
 
-        if (titulo.contains("ahorros")) {
-            htmlDatos += "<b>Saldo:</b> " + saldoODuuda + "$<br>";
-        } else {
-            htmlDatos += "<b>Deuda:</b> " + saldoODuuda + "$<br>"
-                    + "<b>Disponible:</b> " + disponible + "$<br>";
+        if (!disponible.isEmpty()) {
+            info += "<b>Disponible:</b> $" + disponible + "<br>";
         }
 
-        htmlDatos += "<br><b>Últimos 4 dígitos:</b> " + ult4Digitos + "<br>"
-                + "<b>Vencimiento:</b> " + vencimiento + "</div></html>";
+        info += "<b>Vencimiento:</b> " + vencimiento + "</div></html>";
 
-        JLabel datosLabel = new JLabel(htmlDatos);
+        JLabel datosLabel = new JLabel(info);
         datosLabel.setBorder(new EmptyBorder(10, 20, 10, 20));
         panel.add(datosLabel, BorderLayout.CENTER);
 
-        JPanel botones = new JPanel(new GridLayout(2, 1, 10, 10));
-        botones.setBackground(Color.WHITE);
-        botones.setBorder(new EmptyBorder(10, 50, 20, 50));
+        JPanel botones = new JPanel();
+        JButton b1 = new JButton(btn1);
+        JButton b2 = new JButton(btn2);
+        JButton cambiarTarjetaBtn = new JButton("Cambiar Tarjeta");
 
-        JButton b1 = new JButton(boton1);
-        JButton b2 = new JButton(boton2);
-        estilizarBoton(b1);
-        estilizarBoton(b2);
+        b1.addActionListener(e -> JOptionPane.showMessageDialog(this, "Acción: " + btn1));
+        b2.addActionListener(e -> JOptionPane.showMessageDialog(this, "Acción: " + btn2));
+
+        cambiarTarjetaBtn.addActionListener(e -> {
+            ClienteNatural cliente = registro.getClienteAutenticado();
+            if (cliente != null) {
+                new CambioTarjeta(registro, cliente.getId()).setVisible(true);
+                dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay cliente autenticado.");
+            }
+        });
 
         botones.add(b1);
         botones.add(b2);
+        botones.add(cambiarTarjetaBtn);
 
         panel.add(botones, BorderLayout.SOUTH);
 
         return panel;
-    }
-
-    private void estilizarBoton(JButton boton) {
-        boton.setBackground(new Color(230, 230, 250));
-        boton.setForeground(Color.BLACK);
-        boton.setFocusPainted(false);
-        boton.setFont(new Font("Arial", Font.BOLD, 12));
-        boton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(180, 180, 180)),
-                new EmptyBorder(5, 15, 5, 15)));
     }
 }

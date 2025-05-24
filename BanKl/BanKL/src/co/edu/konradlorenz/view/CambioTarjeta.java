@@ -21,7 +21,7 @@ public class CambioTarjeta extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // HEADER
+        // === HEADER ===
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
 
@@ -40,7 +40,7 @@ public class CambioTarjeta extends JFrame {
 
         add(header, BorderLayout.NORTH);
 
-        // PANEL CENTRAL
+        // === PANEL CENTRAL ===
         JPanel centro = new JPanel(new BorderLayout());
         centro.setBorder(new EmptyBorder(20, 20, 20, 20));
         centro.setBackground(Color.WHITE);
@@ -58,8 +58,8 @@ public class CambioTarjeta extends JFrame {
         tarjetaPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         tarjetaPanel.setPreferredSize(new Dimension(400, 200));
 
-        JTextField documentoField = new JTextField(clienteId); // Campo prellenado
-        documentoField.setEditable(false); // Para evitar que se edite accidentalmente
+        JTextField documentoField = new JTextField(clienteId);
+        documentoField.setEditable(false);
         JLabel documentoLabel = new JLabel("Documento del cliente:");
         JLabel infoLabel = new JLabel("Seleccione el tipo de tarjeta a cambiar:", SwingConstants.CENTER);
         JComboBox<String> tipoTarjetaCombo = new JComboBox<>(new String[]{"Débito", "Crédito"});
@@ -86,7 +86,7 @@ public class CambioTarjeta extends JFrame {
         volverBtn.setBackground(new Color(200, 200, 200));
 
         volverBtn.addActionListener(e -> {
-            new Cuentas(registro).setVisible(true);
+            new Cuentas(registro).setVisible(true);  // vuelve al panel de cuentas
             dispose();
         });
 
@@ -98,7 +98,7 @@ public class CambioTarjeta extends JFrame {
 
         add(centro, BorderLayout.CENTER);
 
-        // FOOTER
+        // === FOOTER ===
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(230, 220, 210));
         footer.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -109,7 +109,7 @@ public class CambioTarjeta extends JFrame {
 
         add(footer, BorderLayout.SOUTH);
 
-        // Lógica del botón
+        //  LÓGICA DEL BOTÓN GENERAR TARJETA 
         generarBtn.addActionListener(e -> {
             String documento = documentoField.getText().trim();
             if (documento.isEmpty()) {

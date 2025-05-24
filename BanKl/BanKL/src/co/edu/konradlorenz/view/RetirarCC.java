@@ -11,7 +11,7 @@ public class RetirarCC extends JFrame {
     private TarjetaCredito tarjeta;
 
     public RetirarCC(Registro registro) {
-        ClienteNatural cliente = registro.buscarClientePorDocumento();
+        ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();
         } else {

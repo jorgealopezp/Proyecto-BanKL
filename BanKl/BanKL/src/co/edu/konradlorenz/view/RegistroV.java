@@ -5,11 +5,11 @@ import co.edu.konradlorenz.model.Registro;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class RegistroV extends JFrame {
     private Registro registro;
 
-    // Campos requeridos
     private JTextField campoNombre;
     private JTextField campoDocumento;
     private JPasswordField campoClave;
@@ -90,18 +90,25 @@ public class RegistroV extends JFrame {
                 return;
             }
 
-            // Crear cliente con campos vacíos para los que ya no se usan
+            if (registro.buscarClientePorDocumento(documento) != null) {
+                JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese documento.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // ✅ Solución: lista vacía para evitar NullPointerException
             ClienteNatural nuevoCliente = new ClienteNatural(
-                    nombre, "", documento, "", 0, "", null, documento, clave
+                    nombre, "", documento, "", 0, "", new ArrayList<>(), documento, clave
             );
-            nuevoCliente.generarPinSeguridad();
-            nuevoCliente.registrarCliente();
+
+            nuevoCliente.generarPinSeguridad();   // Puedes implementar esto si no está
+            nuevoCliente.registrarCliente();      // Genera tarjetas débito y crédito
 
             registro.agregarCliente(nuevoCliente);
+            registro.setClienteAutenticado(nuevoCliente);
 
             JOptionPane.showMessageDialog(this, "Registro exitoso. Redirigiendo a inicio.");
             dispose();
-            new HomePage(registro).setVisible(true);
+            new HomePage(registro).setVisible(true); // Asegúrate de tener esta clase
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error en el registro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

@@ -13,7 +13,7 @@ public class RetiroCA extends JFrame {
     private TarjetaDebito tarjeta;
 
     public RetiroCA(Registro registro) {
-        ClienteNatural cliente = registro.buscarClientePorDocumento(clienteId);
+        ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaDebito() != null) {
             this.tarjeta = cliente.getTarjetaDebito();
         } else {
