@@ -4,7 +4,10 @@ package co.edu.konradlorenz.controller;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.SwingUtilities;
+
 import co.edu.konradlorenz.model.*;
+import co.edu.konradlorenz.view.HomePage;
 import co.edu.konradlorenz.view.Ventana;
 
 public class Control {
@@ -14,32 +17,35 @@ public class Control {
     TarjetaDebito objTD = new TarjetaDebito();
     TarjetaCredito objTC = new TarjetaCredito();
     AlertasBancarias objAB = new AlertasBancarias();
-    SeguridadBancaria objSB = new SeguridadBancaria();
+    CambioDivisas objCD = new CambioDivisas();
+    Registro registro = new Registro(); // Instancia de Registro
 
     // Método principal que arranca el programa y muestra el menú principal
     public void run() {
+
         Ventana.mostrarMensaje("Bienvenido al sistema BanKL");
         int opcion = 0;
 
         // Bucle principal del menú
         do {
+             SwingUtilities.invokeLater(() -> {
+            new HomePage().setVisible(true);
+        });
             Ventana.mostrarMensaje("\nMenú Principal");
             Ventana.mostrarMensaje("1. Información de la cuenta");
             Ventana.mostrarMensaje("2. Información de tarjetas");
             Ventana.mostrarMensaje("3. Cambio de divisas");
-            Ventana.mostrarMensaje("4. Protección de valores");
-            Ventana.mostrarMensaje("5. Ver alertas");
-            Ventana.mostrarMensaje("6. Salir");
+            Ventana.mostrarMensaje("4. Ver alertas");
+            Ventana.mostrarMensaje("5. Salir");
 
             try {
                 opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
-                if (opcion < 1 || opcion > 6) {
+                if (opcion < 1 || opcion > 5) {
                     Ventana.mostrarMensaje("Opción no válida. Intente de nuevo.");
                     continue;
                 }
 
-                // Lógica según opción seleccionada
                 switch (opcion) {
                     case 1:
                         mostrarInformacionCuenta();
@@ -51,30 +57,25 @@ public class Control {
                         realizarCambioDivisas();
                         break;
                     case 4:
-                        protegerValores();
-                        break;
-                    case 5:
                         verAlertas();
                         break;
-                    case 6:
+                    case 5:
                         Ventana.mostrarMensaje("Saliendo del sistema...");
                         break;
                 }
 
             } catch (Exception e) {
-                Ventana.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 6.");
+                Ventana.mostrarMensaje("Error: Entrada no válida. Por favor, ingrese un número entre 1 y 5.");
             }
 
-        } while (opcion != 6);
+        } while (opcion != 5);
     }
 
-    // Muestra el saldo de la cuenta del usuario
     private void mostrarInformacionCuenta() {
         Ventana.mostrarMensaje("\nInformación de la Cuenta");
         Ventana.mostrarMensaje("Saldo actual: " + objC.getSaldo());
     }
 
-    // Menú para administrar tarjetas (débito y crédito)
     public void administrarTarjetas() {
         int opcion = 0;
         do {
@@ -107,7 +108,6 @@ public class Control {
         } while (opcion != 3);
     }
 
-    // Menú de operaciones con la tarjeta débito
     public void gestionarTarjetaDebito() {
         int opcion;
         do {
@@ -119,7 +119,7 @@ public class Control {
             opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1: // Depositar dinero
+                case 1:
                     double montoDeposito = Ventana.pedirDouble("Ingrese el monto a depositar: ");
                     if (montoDeposito < 0) {
                         Ventana.mostrarMensaje("Monto no válido.");
@@ -130,7 +130,7 @@ public class Control {
                         Ventana.mostrarMensaje("Depósito realizado.");
                     }
                     break;
-                case 2: // Retirar dinero
+                case 2:
                     double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
                     if (montoRetiro < 0) {
                         Ventana.mostrarMensaje("Monto no válido.");
@@ -151,7 +151,6 @@ public class Control {
         } while (opcion != 3);
     }
 
-    // Menú de operaciones con la tarjeta crédito
     public void gestionarTarjetaCredito() {
         int opcion;
         do {
@@ -163,7 +162,7 @@ public class Control {
             opcion = Ventana.pedirEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1: // Pagar a la tarjeta
+                case 1:
                     double montoPago = Ventana.pedirDouble("Ingrese el monto a pagar: ");
                     if (montoPago < 0) {
                         Ventana.mostrarMensaje("Monto no válido.");
@@ -174,7 +173,7 @@ public class Control {
                         Ventana.mostrarMensaje("Pago realizado.");
                     }
                     break;
-                case 2: // Retirar crédito
+                case 2:
                     double montoRetiro = Ventana.pedirDouble("Ingrese el monto a retirar: ");
                     if (montoRetiro < 0) {
                         Ventana.mostrarMensaje("Monto no válido.");
@@ -195,7 +194,6 @@ public class Control {
         } while (opcion != 3);
     }
 
-    // Función que realiza un cambio de divisas entre USD, EUR y COP
     public void realizarCambioDivisas() {
         CambioDivisas conversor = new CambioDivisas();
         Set<String> monedasValidas = Set.of("USD", "EUR", "COP");
@@ -234,13 +232,6 @@ public class Control {
         }
     }
 
-    // Método actualmente en desarrollo
-    public void protegerValores() {
-        Ventana.mostrarMensaje("\nProtección de Valores");
-        Ventana.mostrarMensaje("En desarrollo...");
-    }
-
-    // Muestra las alertas bancarias registradas
     public void verAlertas() {
         List<Alerta> alertas = objAB.revisarAlertas();
         if (alertas.isEmpty()) {
