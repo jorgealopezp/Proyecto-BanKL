@@ -1,11 +1,12 @@
 package co.edu.konradlorenz.model;
 
-import co.edu.konradlorenz.view.Ventana;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import co.edu.konradlorenz.view.Ventana;
 
 public class ClienteNatural extends Cliente {
 
@@ -14,8 +15,8 @@ public class ClienteNatural extends Cliente {
     }
 
     public ClienteNatural(String nombres, String apellidos, String id, String direccion, int telefono,
-                          String email, List<Cuenta> cuentas, String usuarioIS, String contraseña) {
-        super(nombres, apellidos, id, direccion, telefono, email, cuentas, usuarioIS, contraseña);
+                          String email, List<Cuenta> cuentas, String usuarioIS, String contrasena) {
+        super(nombres, apellidos, id, direccion, telefono, email, cuentas, usuarioIS, contrasena);
     }
 
     @Override
@@ -36,9 +37,12 @@ public class ClienteNatural extends Cliente {
                 generarNumeroTarjeta(),
                 generarFechaExpiracion(),
                 generarCVV(),
-                2000000 // cupo inicial
+                2000000
         );
 
+        if (this.cuentas == null) {
+            this.cuentas = new ArrayList<>();
+        }
         this.cuentas.add(debito);
         this.cuentas.add(credito);
 
@@ -49,7 +53,7 @@ public class ClienteNatural extends Cliente {
     }
 
     @Override
-    public boolean iniciarSesion(String usuario, String contraseña, int pin) {
+    public boolean iniciarSesion(String usuario, String contrasena, int pin) {
         return this.usuarioIS.equals(usuario)
                 && this.contraseña.equals(contraseña)
                 && this.pinSeguridad == pin;
@@ -84,16 +88,20 @@ public class ClienteNatural extends Cliente {
 
     private String generarFechaExpiracion() {
         LocalDate hoy = LocalDate.now();
-        LocalDate expiracion = hoy.plusYears(5); // La tarjeta expira en 5 años
+        LocalDate expiracion = hoy.plusYears(5);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
         return expiracion.format(formatter);
     }
 
     private int generarCVV() {
-        return new Random().nextInt(900) + 100; // CVV entre 100 y 999
+        return new Random().nextInt(900) + 100;
     }
 
     private int generarNumeroCuenta() {
-        return new Random().nextInt(90000000) + 10000000; // Número de cuenta de 8 dígitos
+        return new Random().nextInt(90000000) + 10000000;
+    }
+
+    public void generarPinSeguridad() {
+        this.pinSeguridad = new Random().nextInt(9000) + 1000;
     }
 }

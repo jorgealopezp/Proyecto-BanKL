@@ -11,7 +11,7 @@ public class PagoCC extends JFrame {
     private TarjetaCredito tarjeta;
 
     public PagoCC(Registro registro) {
-        ClienteNatural cliente = registro.buscarClientePorDocumento(clienteId);
+        ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();
         } else {

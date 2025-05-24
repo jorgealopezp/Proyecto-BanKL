@@ -41,15 +41,6 @@ public class TarjetaDebito extends Cuenta {
     }
 }
 
-   public boolean realizarPago(double valor) {
-    if (valor > 0 && valor <= getSaldo()) {
-        setSaldo(getSaldo() - valor);
-        alertas.add("Pago realizado con tarjeta débito: " + valor);
-        return true;
-    } else {
-        alertas.add("Intento de pago fallido: fondos insuficientes o monto inválido.");
-        return false;
-    }
 }
-}
+
 
