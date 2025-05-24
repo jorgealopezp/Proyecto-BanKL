@@ -1,18 +1,21 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.ClienteNatural;
-import co.edu.konradlorenz.model.Registro;
-import co.edu.konradlorenz.model.TarjetaDebito;
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PagoCA extends JFrame {
+
     private TarjetaDebito tarjetaDebito;
 
     public PagoCA(Registro registro) {
+<<<<<<< Updated upstream
         ClienteNatural cliente = registro.getClienteAutenticado();
 
+=======
+        ClienteNatural cliente = registro.buscarClientePorDocumento(getName());
+>>>>>>> Stashed changes
         if (cliente != null && cliente.getTarjetaDebito() != null) {
             this.tarjetaDebito = cliente.getTarjetaDebito();
         } else {
