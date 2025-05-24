@@ -10,12 +10,8 @@ public class PagoCA extends JFrame {
     private TarjetaDebito tarjetaDebito;
 
     public PagoCA(Registro registro) {
-<<<<<<< Updated upstream
         ClienteNatural cliente = registro.getClienteAutenticado();
 
-=======
-        ClienteNatural cliente = registro.buscarClientePorDocumento(getName());
->>>>>>> Stashed changes
         if (cliente != null && cliente.getTarjetaDebito() != null) {
             this.tarjetaDebito = cliente.getTarjetaDebito();
         } else {
@@ -99,7 +95,7 @@ public class PagoCA extends JFrame {
                     return;
                 }
 
-                tarjetaDebito.consignar(monto); 
+                tarjetaDebito.consignar(monto);
                 lblResultado.setText("Consignación exitosa. Nuevo saldo: $" + tarjetaDebito.getSaldo());
                 lblSaldoValor.setText(String.format("%.2f$", tarjetaDebito.getSaldo()));
                 txtMonto.setText("");
