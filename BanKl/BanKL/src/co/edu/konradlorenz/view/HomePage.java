@@ -73,8 +73,8 @@ public class HomePage extends JFrame {
         footer.setBackground(new Color(220, 215, 210));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         footer.add(new JLabel("<html><b>Contáctanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>"));
-        footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br>Reclamos o Sugerencias</center></html>", SwingConstants.CENTER));
-        footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</center></html>", SwingConstants.RIGHT));
+        footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br><br><br></center></html>", SwingConstants.CENTER));
+        footer.add(new JLabel("<html><center><b>Vigilados por</b><br> SFC </center></html>", SwingConstants.RIGHT));
 
         // AGREGAR A FRAME
         add(header, BorderLayout.NORTH);
