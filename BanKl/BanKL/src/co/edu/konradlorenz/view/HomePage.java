@@ -84,7 +84,7 @@ public class HomePage extends JFrame {
         // LISTENERS
         registerButton.addActionListener((ActionEvent e) -> {
             dispose();
-            new RegistroV(registro).setVisible(true); 
+            new RegistroV(registro, alertasBancarias).setVisible(true); 
         });
 
         loginButton.addActionListener((ActionEvent e) -> {

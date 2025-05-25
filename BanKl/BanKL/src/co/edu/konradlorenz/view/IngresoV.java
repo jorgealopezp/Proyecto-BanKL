@@ -78,7 +78,8 @@ public class IngresoV extends JFrame {
 
                 if (opcion == JOptionPane.YES_OPTION) {
                     dispose();
-                    new RegistroV(registro).setVisible(true);
+                    // CORREGIDO: Se pasan ambos parámetros como requiere RegistroV
+                    new RegistroV(registro, alertasBancarias).setVisible(true);
                 } else {
                     documentoField.setText("");
                     claveField.setText("");
@@ -129,3 +130,4 @@ public class IngresoV extends JFrame {
         return panel;
     }
 }
+

@@ -13,7 +13,7 @@ public class RegistroV extends JFrame {
     private JTextField campoDocumento;
     private JPasswordField campoClave;
 
-    public RegistroV(Registro registro) {
+    public RegistroV(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
 
         setTitle("BanKL - Registro");
