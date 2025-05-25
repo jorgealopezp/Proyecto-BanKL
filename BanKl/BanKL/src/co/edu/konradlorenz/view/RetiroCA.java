@@ -8,9 +8,11 @@ import java.util.List;
 
 public class RetiroCA extends JFrame {
     private Registro registro;
+    private AlertasBancarias alertasBancarias;
 
-    public RetiroCA(Registro registro) {
+    public RetiroCA(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
 
         setTitle("Retiro - Cuenta de Ahorros");
         setSize(800, 500);
@@ -41,7 +43,6 @@ public class RetiroCA extends JFrame {
         center.setBackground(Color.WHITE);
         center.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
 
-        
         JLabel titulo = new JLabel("Cuentas", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
         titulo.setOpaque(true);
@@ -90,7 +91,7 @@ public class RetiroCA extends JFrame {
         volverBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         volverBtn.addActionListener(e -> {
             dispose();
-            new Cuentas(registro).setVisible(true);
+            new Cuentas(registro, alertasBancarias).setVisible(true);
         });
         center.add(volverBtn);
 

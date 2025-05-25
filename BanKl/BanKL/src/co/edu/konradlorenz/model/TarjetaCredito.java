@@ -23,18 +23,18 @@ public class TarjetaCredito extends Cuenta {
     public void setCupo(double cupo) {
         this.cupo = cupo;
     }
+
     public double disponible() {
-    return cupo + getSaldo(); 
-}
+        return cupo + getSaldo(); 
+    }
+
     @Override
     public void consignar(double valor) {
         try {
-            validarTransaccion(valor, 3000000); // Límite de 3M por transacción
-
+            validarTransaccion(valor, 3000000);
             setSaldo(getSaldo() + valor);
             cupo += valor;
             alertas.add("Pago realizado en tarjeta de crédito: " + valor);
-
         } catch (IllegalArgumentException e) {
             alertas.add("Error en consignación: " + e.getMessage());
         }
@@ -43,17 +43,14 @@ public class TarjetaCredito extends Cuenta {
     @Override
     public boolean retirar(double valor) {
         try {
-            validarTransaccion(valor, 3000000); // Límite de 3M
-
+            validarTransaccion(valor, 3000000);
             if (valor > cupo) {
                 throw new IllegalArgumentException("El valor excede el cupo disponible.");
             }
-
             setSaldo(getSaldo() - valor);
             cupo -= valor;
             alertas.add("Avance en efectivo de tarjeta de crédito: " + valor);
             return true;
-
         } catch (IllegalArgumentException e) {
             alertas.add("Error en retiro: " + e.getMessage());
             return false;

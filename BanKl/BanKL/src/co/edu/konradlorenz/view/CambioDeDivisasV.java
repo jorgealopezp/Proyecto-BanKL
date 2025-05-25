@@ -2,7 +2,6 @@ package co.edu.konradlorenz.view;
 
 import co.edu.konradlorenz.model.*;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,9 +10,11 @@ public class CambioDeDivisasV extends JFrame {
 
     private final Registro registro;
     private final CambioDivisas cambioDivisas;
+    private final AlertasBancarias alertasBancarias;
 
-    public CambioDeDivisasV(Registro registro) {
+    public CambioDeDivisasV(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
         this.cambioDivisas = new CambioDivisas();
 
         setTitle("Divisas - BanKL");
@@ -42,7 +43,6 @@ public class CambioDeDivisasV extends JFrame {
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        // Título
         JLabel titulo = new JLabel("Divisas", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 28));
         titulo.setOpaque(true);
@@ -55,25 +55,20 @@ public class CambioDeDivisasV extends JFrame {
         centerPanel.add(titulo);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        // Instrucciones
         JLabel instrucciones = new JLabel(
                 "<html><div style='text-align:center;'>Estimado Usuario seleccione<br>la divisa que desea cambiar y<br>a la que desea que sea cambiada</div></html>");
         instrucciones.setFont(new Font("Arial", Font.BOLD, 16));
-
         JPanel instruccionesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        instruccionesPanel.setOpaque(false); // Para mantener el fondo blanco del centerPanel
+        instruccionesPanel.setOpaque(false);
         instruccionesPanel.add(instrucciones);
-
         centerPanel.add(instruccionesPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        // Panel de divisas
         JPanel divisaPanel = new JPanel(new GridLayout(2, 3, 20, 10));
         divisaPanel.setOpaque(false);
         divisaPanel.setMaximumSize(new Dimension(600, 100));
 
         String[] monedas = { "USD", "EUR", "COP" };
-
         JComboBox<String> comboOrigen = new JComboBox<>(monedas);
         JComboBox<String> comboDestino = new JComboBox<>(monedas);
 
@@ -97,7 +92,6 @@ public class CambioDeDivisasV extends JFrame {
         centerPanel.add(divisaPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        // Botón Aceptar
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setPreferredSize(new Dimension(120, 40));
         btnAceptar.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -121,15 +115,14 @@ public class CambioDeDivisasV extends JFrame {
         centerPanel.add(btnAceptar);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Botón Volver
         JButton btnVolver = new JButton("Volver");
         btnVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnVolver.addActionListener(e -> {
-            new IngresoCliente(registro).setVisible(true);
+            new IngresoCliente(registro, alertasBancarias).setVisible(true); 
             dispose();
         });
-        centerPanel.add(btnVolver);
 
+        centerPanel.add(btnVolver);
         add(centerPanel, BorderLayout.CENTER);
 
         // === FOOTER ===

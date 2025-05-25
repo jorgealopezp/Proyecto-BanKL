@@ -9,7 +9,7 @@ import java.awt.*;
 public class PagoCC extends JFrame {
     private TarjetaCredito tarjeta;
 
-    public PagoCC(Registro registro) {
+    public PagoCC(Registro registro, AlertasBancarias alertasBancarias) {
         ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();

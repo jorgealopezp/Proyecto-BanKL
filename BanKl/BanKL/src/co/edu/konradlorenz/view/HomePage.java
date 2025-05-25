@@ -8,15 +8,22 @@ import java.awt.event.ActionEvent;
 
 public class HomePage extends JFrame {
     private Registro registro;
+    private AlertasBancarias alertasBancarias;
 
     // Constructor por defecto
     public HomePage() {
-        this(new Registro());
+        this(new Registro(), new AlertasBancarias());
     }
 
     // Constructor con Registro existente
     public HomePage(Registro registro) {
+        this(registro, new AlertasBancarias());
+    }
+
+    // Constructor con Registro y AlertasBancarias
+    public HomePage(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro != null ? registro : new Registro();
+        this.alertasBancarias = alertasBancarias != null ? alertasBancarias : new AlertasBancarias();
         initComponents();
         setVisible(true);
     }
@@ -71,12 +78,12 @@ public class HomePage extends JFrame {
         // LISTENERS
         registerButton.addActionListener((ActionEvent e) -> {
             dispose();
-            new RegistroV(registro).setVisible(true);
+            new RegistroV(registro).setVisible(true); 
         });
 
         loginButton.addActionListener((ActionEvent e) -> {
             dispose();
-            new IngresoV(registro).setVisible(true);
+            new IngresoV(registro, alertasBancarias).setVisible(true);
         });
     }
 

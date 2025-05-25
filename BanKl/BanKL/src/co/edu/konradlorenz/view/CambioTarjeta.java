@@ -11,9 +11,11 @@ import java.time.format.DateTimeFormatter;
 public class CambioTarjeta extends JFrame {
 
     private final String clienteId;
+    private final AlertasBancarias alertasBancarias;
 
-    public CambioTarjeta(Registro registro, String clienteId) {
+    public CambioTarjeta(Registro registro, String clienteId, AlertasBancarias alertasBancarias) {
         this.clienteId = clienteId;
+        this.alertasBancarias = alertasBancarias;
 
         setTitle("Cambio de Tarjeta");
         setSize(800, 500);
@@ -86,7 +88,7 @@ public class CambioTarjeta extends JFrame {
         volverBtn.setBackground(new Color(200, 200, 200));
 
         volverBtn.addActionListener(e -> {
-            new Cuentas(registro).setVisible(true);  // vuelve al panel de cuentas
+            new Cuentas(registro, alertasBancarias).setVisible(true);
             dispose();
         });
 
@@ -109,7 +111,7 @@ public class CambioTarjeta extends JFrame {
 
         add(footer, BorderLayout.SOUTH);
 
-        //  LÓGICA DEL BOTÓN GENERAR TARJETA 
+        // === LÓGICA DEL BOTÓN GENERAR TARJETA ===
         generarBtn.addActionListener(e -> {
             String documento = documentoField.getText().trim();
             if (documento.isEmpty()) {

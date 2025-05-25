@@ -8,9 +8,11 @@ import java.awt.*;
 public class IngresoCliente extends JFrame {
 
     private Registro registro;
+    private AlertasBancarias alertasBancarias;
 
-    public IngresoCliente(Registro registro) {
+    public IngresoCliente(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
 
         setTitle("Panel del Cliente - BanKL");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -62,17 +64,17 @@ public class IngresoCliente extends JFrame {
         estilizarBoton(alertasBtn);
 
         cuentasBtn.addActionListener(e -> {
-            new Cuentas(registro).setVisible(true);
+            new Cuentas(registro,alertasBancarias).setVisible(true);
             dispose();
         });
 
         divisasBtn.addActionListener(e -> {
-            new CambioDeDivisasV(registro).setVisible(true);
+            new CambioDeDivisasV(registro,alertasBancarias).setVisible(true);
             dispose();
         });
 
         alertasBtn.addActionListener(e -> {
-            new AlertasV(registro).setVisible(true);
+            new AlertasV(alertasBancarias, registro).setVisible(true);
             dispose();
         });
 

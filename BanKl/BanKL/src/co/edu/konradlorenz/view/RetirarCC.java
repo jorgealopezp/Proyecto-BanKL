@@ -7,8 +7,9 @@ import java.awt.*;
 
 public class RetirarCC extends JFrame {
     private TarjetaCredito tarjeta;
+    private AlertasBancarias alertasBancarias;
 
-    public RetirarCC(Registro registro) {
+    public RetirarCC(Registro registro, AlertasBancarias alertarBancarias) {
         ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();
@@ -73,7 +74,7 @@ public class RetirarCC extends JFrame {
                             "\nDeuda actual: $" + Math.abs(tarjeta.getSaldo()));
 
                     dispose(); // Cierra la ventana actual
-                    new Cuentas(registro).setVisible(true); // Recarga la vista de cuentas
+                    new Cuentas(registro,alertarBancarias).setVisible(true); 
                 } else {
                     JOptionPane.showMessageDialog(this, "Fondos insuficientes.");
                 }

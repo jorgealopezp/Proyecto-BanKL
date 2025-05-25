@@ -31,6 +31,11 @@ public class Control {
              SwingUtilities.invokeLater(() -> {
             new HomePage().setVisible(true);
         });
+
+
+
+
+        
             Ventana.mostrarMensaje("\nMenú Principal");
             Ventana.mostrarMensaje("1. Información de la cuenta");
             Ventana.mostrarMensaje("2. Información de tarjetas");

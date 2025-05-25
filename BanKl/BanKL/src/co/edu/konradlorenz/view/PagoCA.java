@@ -6,13 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PagoCA extends JFrame {
-    private Registro registro;
+    private final Registro registro;
+    private final AlertasBancarias alertasBancarias;
     private TarjetaDebito tarjeta;
     private JLabel saldoLabel;
     private JTextField valorField;
 
-    public PagoCA(Registro registro) {
+    public PagoCA(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
 
         ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente == null) {
@@ -57,8 +59,6 @@ public class PagoCA extends JFrame {
 
         add(header, BorderLayout.NORTH);
 
-
-        
         // Centro
         JPanel centro = new JPanel();
         centro.setBackground(Color.WHITE);
@@ -115,7 +115,7 @@ public class PagoCA extends JFrame {
         volverBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         volverBtn.addActionListener(e -> {
             dispose();
-            new Cuentas(registro).setVisible(true);
+            new Cuentas(registro, alertasBancarias).setVisible(true); // <- aquí el cambio
         });
         centro.add(volverBtn);
 

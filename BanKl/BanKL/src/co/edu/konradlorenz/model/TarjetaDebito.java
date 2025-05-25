@@ -31,16 +31,15 @@ public class TarjetaDebito extends Cuenta {
 
     @Override
     public boolean retirar(double valor) {
-    if (valor > 0 && valor <= getSaldo()) {
-        setSaldo(getSaldo() - valor);
-        alertas.add("Retiro en tarjeta débito: " + valor);
-        return true;
-    } else {
-        alertas.add("Intento de retiro fallido: fondos insuficientes o monto inválido.");
-        return false;
+        if (valor > 0 && valor <= getSaldo()) {
+            setSaldo(getSaldo() - valor);
+            alertas.add("Retiro en tarjeta débito: " + valor);
+            return true;
+        } else {
+            alertas.add("Intento de retiro fallido: fondos insuficientes o monto inválido.");
+            return false;
+        }
     }
-}
-
 }
 
 

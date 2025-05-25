@@ -8,10 +8,12 @@ import java.awt.*;
 import java.util.List;
 
 public class Cuentas extends JFrame {
-    private Registro registro;
+    private final Registro registro;
+    private final AlertasBancarias alertasBancarias;
 
-    public Cuentas(Registro registro) {
+    public Cuentas(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
 
         setTitle("Cuentas del Cliente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,7 +21,6 @@ public class Cuentas extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(220, 215, 210));
 
@@ -32,7 +33,6 @@ public class Cuentas extends JFrame {
         header.add(logo, BorderLayout.WEST);
         add(header, BorderLayout.NORTH);
 
-        // Panel central con cuentas
         JPanel centro = new JPanel();
         centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
         centro.setBackground(Color.WHITE);
@@ -57,8 +57,8 @@ public class Cuentas extends JFrame {
                     centro.add(crearPanelCuenta(
                             "Tarjeta de Crédito",
                             credito.getNumeroTarjeta(),
-                            String.format("%.2f", Math.abs(credito.getSaldo())),  
-                            String.format("%.2f", credito.disponible()),      
+                            String.format("%.2f", Math.abs(credito.getSaldo())),
+                            String.format("%.2f", credito.disponible()),
                             credito.getFechaExpiracion(),
                             "Pagar",
                             "Avance",
@@ -75,14 +75,15 @@ public class Cuentas extends JFrame {
         JScrollPane scrollPane = new JScrollPane(centro);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Footer
         JPanel footer = new JPanel();
         footer.setBackground(Color.WHITE);
         JButton volverBtn = new JButton("Volver");
+
         volverBtn.addActionListener(e -> {
             dispose();
-            new IngresoCliente(registro).setVisible(true);
+            new IngresoCliente(registro, alertasBancarias).setVisible(true);
         });
+
         footer.add(volverBtn);
         add(footer, BorderLayout.SOUTH);
     }
@@ -121,28 +122,26 @@ public class Cuentas extends JFrame {
         JButton b2 = new JButton(btn2);
         JButton cambiarTarjetaBtn = new JButton("Cambiar Tarjeta");
 
-        // Acción real para b1
         b1.addActionListener(e -> {
             if (btn1.equals("Ingresar")) {
-                new PagoCA(registro);
+                new PagoCA(registro, alertasBancarias).setVisible(true);
             } else if (btn1.equals("Pagar")) {
-                new PagoCC(registro);
+                new PagoCC(registro, alertasBancarias).setVisible(true);
             }
         });
 
-        // Acción real para b2
         b2.addActionListener(e -> {
             if (btn2.equals("Retirar")) {
-                new RetiroCA(registro);
+                new RetiroCA(registro, alertasBancarias).setVisible(true);
             } else if (btn2.equals("Avance")) {
-                new RetirarCC(registro);
+                new RetirarCC(registro, alertasBancarias).setVisible(true);
             }
         });
 
         cambiarTarjetaBtn.addActionListener(e -> {
             ClienteNatural cliente = registro.getClienteAutenticado();
             if (cliente != null) {
-                new CambioTarjeta(registro, cliente.getId()).setVisible(true);
+                new CambioTarjeta(registro, cliente.getId(), alertasBancarias).setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "No hay cliente autenticado.");

@@ -8,11 +8,13 @@ import java.awt.*;
 public class IngresoV extends JFrame {
 
     private Registro registro;
+    private AlertasBancarias alertasBancarias;
     private JTextField documentoField;
     private JPasswordField claveField;
 
-    public IngresoV(Registro registro) {
+    public IngresoV(Registro registro, AlertasBancarias alertasBancarias) {
         this.registro = registro;
+        this.alertasBancarias = alertasBancarias;
 
         setTitle("BanKL - Ingreso");
         setSize(900, 600);
@@ -83,7 +85,7 @@ public class IngresoV extends JFrame {
                 }
             } else if (Ingreso.autenticar(registro, doc, clave)) {
                 dispose();
-                new IngresoCliente(registro).setVisible(true);
+                new IngresoCliente(registro, alertasBancarias).setVisible(true);
             } else {
                 int opcion = JOptionPane.showOptionDialog(
                         this,
