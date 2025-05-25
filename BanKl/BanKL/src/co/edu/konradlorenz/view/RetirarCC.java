@@ -1,8 +1,6 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.ClienteNatural;
-import co.edu.konradlorenz.model.Registro;
-import co.edu.konradlorenz.model.TarjetaCredito;
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,37 +19,61 @@ public class RetirarCC extends JFrame {
         }
 
         setTitle("Cuenta de crédito");
-        setSize(450, 300);
+        setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel title = new JLabel("Cuenta de crédito", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        // Header con logo
+        JLabel logo = new JLabel("<html><div style='font-family:sans-serif;'>"
+                + "<span style='font-size:26px;'>"
+                + "<b style='color:#001F4E;'>Ban</b><b style='color:#888888;'>KL</b>"
+                + "</span><br>"
+                + "<span style='font-size:12px;'>Innovación financiera para tu futuro</span></div></html>");
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(logo, BorderLayout.NORTH);
 
-        JLabel lblCupo = new JLabel("Su disponible es :");
-        JLabel montoDisponible = new JLabel(String.format("%.1f$", tarjeta.getCupo()), SwingConstants.CENTER);
+        // Centro
+        JPanel centro = new JPanel(new GridLayout(6, 1, 10, 10));
+
+        JLabel title = new JLabel("Avance con tarjeta de crédito", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JLabel lblCupo = new JLabel("Cupo disponible:");
+        JLabel montoDisponible = new JLabel(String.format("%.2f $", tarjeta.getCupo()), SwingConstants.CENTER);
         montoDisponible.setFont(new Font("Arial", Font.BOLD, 16));
 
         JLabel lblIngreso = new JLabel("Ingrese el valor que desea retirar:", SwingConstants.CENTER);
         JTextField txtMonto = new JTextField();
 
-        JButton btnRetirar = new JButton("Retirar");
+        JButton btnRetirar = new JButton("Realizar Avance");
 
-        panel.add(title);
-        panel.add(lblCupo);
-        panel.add(montoDisponible);
-        panel.add(lblIngreso);
-        panel.add(txtMonto);
-        panel.add(btnRetirar);
+        centro.add(title);
+        centro.add(lblCupo);
+        centro.add(montoDisponible);
+        centro.add(lblIngreso);
+        centro.add(txtMonto);
+        centro.add(btnRetirar);
+
+        panel.add(centro, BorderLayout.CENTER);
+
+        // Footer
+        JLabel contacto = new JLabel("<html><center>Contáctanos<br>12345654565</center></html>", JLabel.CENTER);
+        contacto.setForeground(Color.GRAY);
+        panel.add(contacto, BorderLayout.SOUTH);
 
         btnRetirar.addActionListener(e -> {
             try {
                 double monto = Double.parseDouble(txtMonto.getText());
                 if (tarjeta.retirar(monto)) {
-                    JOptionPane.showMessageDialog(this, "Retiro exitoso. Nuevo disponible: $" + tarjeta.getCupo());
+                    JOptionPane.showMessageDialog(this,
+                            "Avance exitoso.\nNuevo disponible: $" + tarjeta.getCupo() +
+                            "\nDeuda actual: $" + Math.abs(tarjeta.getSaldo()));
+
+                    dispose(); // Cierra la ventana actual
+                    new Cuentas(registro).setVisible(true); // Recarga la vista de cuentas
                 } else {
                     JOptionPane.showMessageDialog(this, "Fondos insuficientes.");
                 }

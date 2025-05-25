@@ -48,19 +48,21 @@ public class Cuentas extends JFrame {
                             "Cuenta de Ahorros",
                             debito.getNumeroTarjeta(),
                             String.format("%.2f", debito.getSaldo()),
-                            "", 
+                            "",
                             debito.getFechaExpiracion(),
                             "Ingresar",
-                            "Retirar"));
+                            "Retirar",
+                            debito));
                 } else if (cuenta instanceof TarjetaCredito credito) {
                     centro.add(crearPanelCuenta(
                             "Tarjeta de Crédito",
                             credito.getNumeroTarjeta(),
-                            String.format("%.2f", credito.getSaldo()), // deuda
-                            String.format("%.2f", credito.getCupo() - credito.getSaldo()),
+                            String.format("%.2f", Math.abs(credito.getSaldo())),  
+                            String.format("%.2f", credito.disponible()),      
                             credito.getFechaExpiracion(),
                             "Pagar",
-                            "Avance"));
+                            "Avance",
+                            credito));
                 }
                 centro.add(Box.createVerticalStrut(20));
             }
@@ -86,7 +88,7 @@ public class Cuentas extends JFrame {
     }
 
     private JPanel crearPanelCuenta(String tipoCuenta, String numeroTarjeta, String saldoODuuda, String disponible,
-                                    String vencimiento, String btn1, String btn2) {
+                                    String vencimiento, String btn1, String btn2, Cuenta cuenta) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         panel.setBackground(new Color(245, 245, 245));
@@ -119,14 +121,29 @@ public class Cuentas extends JFrame {
         JButton b2 = new JButton(btn2);
         JButton cambiarTarjetaBtn = new JButton("Cambiar Tarjeta");
 
-        b1.addActionListener(e -> JOptionPane.showMessageDialog(this, "Acción: " + btn1));
-        b2.addActionListener(e -> JOptionPane.showMessageDialog(this, "Acción: " + btn2));
+        // Acción real para b1
+        b1.addActionListener(e -> {
+            if (btn1.equals("Ingresar")) {
+                new PagoCA(registro);
+            } else if (btn1.equals("Pagar")) {
+                new PagoCC(registro);
+            }
+        });
+
+        // Acción real para b2
+        b2.addActionListener(e -> {
+            if (btn2.equals("Retirar")) {
+                new RetiroCA(registro);
+            } else if (btn2.equals("Avance")) {
+                new RetirarCC(registro);
+            }
+        });
 
         cambiarTarjetaBtn.addActionListener(e -> {
             ClienteNatural cliente = registro.getClienteAutenticado();
             if (cliente != null) {
                 new CambioTarjeta(registro, cliente.getId()).setVisible(true);
-                dispose(); 
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "No hay cliente autenticado.");
             }

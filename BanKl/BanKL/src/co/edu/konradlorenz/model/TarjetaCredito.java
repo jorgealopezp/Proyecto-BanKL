@@ -23,7 +23,9 @@ public class TarjetaCredito extends Cuenta {
     public void setCupo(double cupo) {
         this.cupo = cupo;
     }
-
+    public double disponible() {
+    return cupo + getSaldo(); 
+}
     @Override
     public void consignar(double valor) {
         try {

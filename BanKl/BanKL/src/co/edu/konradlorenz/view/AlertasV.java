@@ -1,8 +1,6 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.Alerta;
-import co.edu.konradlorenz.model.AlertasBancarias;
-import co.edu.konradlorenz.model.Registro;
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +13,7 @@ public class AlertasV extends JFrame {
 
     public AlertasV(Registro registro) {
         this.registro = registro;
-        this.alertas = new AlertasBancarias(); // O puedes pasar uno existente
+        this.alertas = registro.getAlertas(); 
 
         setTitle("Alertas - BanKL");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -46,7 +44,7 @@ public class AlertasV extends JFrame {
         header.add(rightPanel, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
-        // Centro
+        // Centro - contenido de alertas
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.WHITE);
@@ -77,7 +75,6 @@ public class AlertasV extends JFrame {
         JScrollPane scrollPane = new JScrollPane(areaAlertas);
         centerPanel.add(scrollPane);
 
-        // Cargar alertas existentes
         cargarAlertas(areaAlertas);
 
         // Botón para volver
@@ -87,12 +84,12 @@ public class AlertasV extends JFrame {
             new IngresoCliente(registro).setVisible(true);
             dispose();
         });
+
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         centerPanel.add(volverButton);
-
         add(centerPanel, BorderLayout.CENTER);
 
-        // Footer
+        // Pie de página
         JPanel footer = new JPanel(new GridLayout(1, 3));
         footer.setBackground(new Color(220, 214, 207));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -102,18 +99,22 @@ public class AlertasV extends JFrame {
         add(footer, BorderLayout.SOUTH);
     }
 
-    private void cargarAlertas(JTextArea area) {
-        
-        List<Alerta> alertasLista = alertas.revisarAlertas();
-        StringBuilder sb = new StringBuilder();
+ private void cargarAlertas(JTextArea area) {
+    List<Alerta> alertasLista = alertas.revisarAlertas();
 
-        for (Alerta alerta : alertasLista) {
-            sb.append("ID: ").append(alerta.getId())
-              .append(" | Tipo: ").append(alerta.getTipo())
-              .append(" | Descripción: ").append(alerta.getDescripcion())
-              .append("\n");
-        }
-
-        area.setText(sb.toString());
+    if (alertasLista.isEmpty()) {
+        area.setText("No hay alertas registradas.");
+        return;
     }
+
+    StringBuilder sb = new StringBuilder();
+    for (Alerta alerta : alertasLista) {
+        sb.append("ID: ").append(alerta.getId())
+          .append(" | Tipo: ").append(alerta.getTipo())
+          .append(" | Descripción: ").append(alerta.getDescripcion())
+          .append("\n");
+    }
+
+    area.setText(sb.toString());
+}
 }

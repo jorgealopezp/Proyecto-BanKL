@@ -6,6 +6,7 @@ import java.util.List;
 public class Registro {
     private List<ClienteNatural> clientes;
     private ClienteNatural clienteAutenticado;
+    private AlertasBancarias alertas = new AlertasBancarias();
 
     public Registro() {
         clientes = new ArrayList<>();
@@ -38,5 +39,9 @@ public class Registro {
 
     public ClienteNatural getClienteAutenticado() {
         return clienteAutenticado;
+    }
+
+    public AlertasBancarias getAlertas() {
+        return alertas;
     }
 }

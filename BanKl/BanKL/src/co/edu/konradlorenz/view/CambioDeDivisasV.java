@@ -1,7 +1,7 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.CambioDivisas;
-import co.edu.konradlorenz.model.Registro;
+import co.edu.konradlorenz.model.*;
+
 
 import javax.swing.*;
 import java.awt.*;

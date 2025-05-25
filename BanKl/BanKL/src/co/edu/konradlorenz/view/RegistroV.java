@@ -1,7 +1,7 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.ClienteNatural;
-import co.edu.konradlorenz.model.Registro;
+import co.edu.konradlorenz.model.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,20 +95,20 @@ public class RegistroV extends JFrame {
                 return;
             }
 
-            // ✅ Solución: lista vacía para evitar NullPointerException
+          
             ClienteNatural nuevoCliente = new ClienteNatural(
                     nombre, "", documento, "", 0, "", new ArrayList<>(), documento, clave
             );
 
-            nuevoCliente.generarPinSeguridad();   // Puedes implementar esto si no está
-            nuevoCliente.registrarCliente();      // Genera tarjetas débito y crédito
+            nuevoCliente.generarPinSeguridad();  
+            nuevoCliente.registrarCliente();      
 
             registro.agregarCliente(nuevoCliente);
             registro.setClienteAutenticado(nuevoCliente);
 
             JOptionPane.showMessageDialog(this, "Registro exitoso. Redirigiendo a inicio.");
             dispose();
-            new HomePage(registro).setVisible(true); // Asegúrate de tener esta clase
+            new HomePage(registro).setVisible(true); 
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error en el registro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

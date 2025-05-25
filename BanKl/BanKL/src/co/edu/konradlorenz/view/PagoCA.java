@@ -6,131 +6,148 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PagoCA extends JFrame {
-
-    private TarjetaDebito tarjetaDebito;
+    private Registro registro;
+    private TarjetaDebito tarjeta;
+    private JLabel saldoLabel;
+    private JTextField valorField;
 
     public PagoCA(Registro registro) {
-        ClienteNatural cliente = registro.getClienteAutenticado();
+        this.registro = registro;
 
-        if (cliente != null && cliente.getTarjetaDebito() != null) {
-            this.tarjetaDebito = cliente.getTarjetaDebito();
-        } else {
-            JOptionPane.showMessageDialog(this, "Cliente o tarjeta débito no encontrada.");
+        ClienteNatural cliente = registro.getClienteAutenticado();
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(this, "No hay cliente autenticado.");
             dispose();
             return;
         }
 
-        setTitle("Pago con Tarjeta Débito");
-        setSize(800, 600);
+        tarjeta = cliente.getCuentas().stream()
+                .filter(c -> c instanceof TarjetaDebito)
+                .map(c -> (TarjetaDebito) c)
+                .findFirst()
+                .orElse(null);
+
+        if (tarjeta == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró una tarjeta de débito.");
+            dispose();
+            return;
+        }
+
+        setTitle("Consignar a Cuenta de Ahorros");
+        setSize(600, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Encabezado
+        // Header
         JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(new Color(223, 215, 207));
-        header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        header.setBackground(new Color(221, 214, 208));
+        JLabel logo = new JLabel("<html><div style='font-size:24px;'><b style='color:#001F4E;'>Ban</b><b style='color:#FFFFFF;'>KL</b></div><div>Innovación financiera para tu futuro</div></html>");
+        logo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 0));
+        header.add(logo, BorderLayout.WEST);
 
-        JLabel lblLogo = new JLabel("<html><span style='font-weight:bold; font-size:28px; color:#1A1F71;'>Ban<span style='color:#CCC;'>KL</span></span><br><span style='font-size:12px;'>Innovación financiera para tu futuro</span></html>");
-        JLabel lblBienvenido = new JLabel("<html><div style='text-align:right;'>Hola,<br>Bienvenido</div></html>");
-        JButton btnSalir = new JButton("Salir");
-        btnSalir.setPreferredSize(new Dimension(80, 30));
-        JPanel right = new JPanel(new BorderLayout());
-        right.setOpaque(false);
-        right.add(lblBienvenido, BorderLayout.CENTER);
-        right.add(btnSalir, BorderLayout.SOUTH);
+        JLabel bienvenido = new JLabel("Hola, Bienvenido", SwingConstants.RIGHT);
+        JButton salir = new JButton("Salir");
+        salir.addActionListener(e -> dispose());
+        JPanel derecha = new JPanel(new BorderLayout());
+        derecha.setOpaque(false);
+        derecha.add(bienvenido, BorderLayout.NORTH);
+        derecha.add(salir, BorderLayout.SOUTH);
+        header.add(derecha, BorderLayout.EAST);
 
-        header.add(lblLogo, BorderLayout.WEST);
-        header.add(right, BorderLayout.EAST);
+        add(header, BorderLayout.NORTH);
 
-        // Título sección principal
-        JPanel tituloPanel = new JPanel();
-        tituloPanel.setBackground(new Color(92, 133, 160));
-        JLabel lblTitulo = new JLabel("Cuentas");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-        lblTitulo.setForeground(Color.WHITE);
-        tituloPanel.add(lblTitulo);
 
-        // Panel central de consignación
-        JPanel panelCentral = new JPanel();
-        panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
-        panelCentral.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
-        panelCentral.setBackground(Color.WHITE);
-        panelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Centro
+        JPanel centro = new JPanel();
+        centro.setBackground(Color.WHITE);
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
+        centro.setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
 
-        JLabel lblSaldo = new JLabel("Saldo:");
-        lblSaldo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblSaldo.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel titulo = new JLabel("Cuentas");
+        titulo.setOpaque(true);
+        titulo.setBackground(new Color(103, 141, 168));
+        titulo.setForeground(Color.WHITE);
+        titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titulo.setMaximumSize(new Dimension(600, 40));
+        centro.add(titulo);
 
-        JLabel lblSaldoValor = new JLabel(String.format("%.2f$", tarjetaDebito.getSaldo()));
-        lblSaldoValor.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblSaldoValor.setFont(new Font("Arial", Font.BOLD, 18));
+        centro.add(Box.createVerticalStrut(30));
 
-        JLabel lblTexto = new JLabel("<html><div style='text-align: center;'>Ingrese el valor que desea<br>consignar a su cuenta de ahorros</div></html>");
-        lblTexto.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblTexto.setFont(new Font("Arial", Font.BOLD, 14));
-        lblTexto.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        saldoLabel = new JLabel("Saldo: " + String.format("%.2f", tarjeta.getSaldo()) + "$");
+        saldoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        saldoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(saldoLabel);
 
-        JTextField txtMonto = new JTextField();
-        txtMonto.setMaximumSize(new Dimension(300, 30));
-        txtMonto.setHorizontalAlignment(JTextField.CENTER);
+        centro.add(Box.createVerticalStrut(15));
 
-        JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setPreferredSize(new Dimension(120, 40));
-        btnAceptar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnAceptar.setBackground(new Color(92, 133, 160));
-        btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFocusPainted(false);
-        btnAceptar.setFont(new Font("Arial", Font.BOLD, 14));
+        JLabel instruccion = new JLabel("Ingrese el valor que desea consignar a su cuenta de ahorros");
+        instruccion.setFont(new Font("Arial", Font.PLAIN, 14));
+        instruccion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(instruccion);
 
-        JLabel lblResultado = new JLabel("");
-        lblResultado.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblResultado.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        centro.add(Box.createVerticalStrut(10));
 
-        btnAceptar.addActionListener(e -> {
-            try {
-                double monto = Double.parseDouble(txtMonto.getText());
-                if (monto <= 0) {
-                    lblResultado.setText("El monto debe ser mayor a cero.");
-                    return;
-                }
+        valorField = new JTextField();
+        valorField.setMaximumSize(new Dimension(200, 30));
+        valorField.setHorizontalAlignment(JTextField.CENTER);
+        valorField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centro.add(valorField);
 
-                tarjetaDebito.consignar(monto);
-                lblResultado.setText("Consignación exitosa. Nuevo saldo: $" + tarjetaDebito.getSaldo());
-                lblSaldoValor.setText(String.format("%.2f$", tarjetaDebito.getSaldo()));
-                txtMonto.setText("");
-            } catch (NumberFormatException ex) {
-                lblResultado.setText("Ingrese un monto válido.");
-            }
+        centro.add(Box.createVerticalStrut(20));
+
+        JButton aceptarBtn = new JButton("Aceptar");
+        aceptarBtn.setPreferredSize(new Dimension(120, 35));
+        aceptarBtn.setBackground(new Color(103, 141, 168));
+        aceptarBtn.setForeground(Color.WHITE);
+        aceptarBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        aceptarBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        aceptarBtn.addActionListener(e -> realizarConsignacion());
+        centro.add(aceptarBtn);
+
+        centro.add(Box.createVerticalStrut(10));
+
+        JButton volverBtn = new JButton("Volver");
+        volverBtn.setPreferredSize(new Dimension(120, 30));
+        volverBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        volverBtn.addActionListener(e -> {
+            dispose();
+            new Cuentas(registro).setVisible(true);
         });
+        centro.add(volverBtn);
 
-        panelCentral.add(lblSaldo);
-        panelCentral.add(lblSaldoValor);
-        panelCentral.add(lblTexto);
-        panelCentral.add(txtMonto);
-        panelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
-        panelCentral.add(btnAceptar);
-        panelCentral.add(lblResultado);
+        add(centro, BorderLayout.CENTER);
 
-        // Pie de página
+        // Footer
         JPanel footer = new JPanel(new GridLayout(1, 3));
-        footer.setBackground(new Color(223, 215, 207));
+        footer.setBackground(new Color(221, 214, 208));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JLabel lblContacto = new JLabel("<html><b>Contactanos</b><br>12314565465<br><br><b>Ubicacion</b><br>Calle Falsa 123</html>");
-        JLabel lblTrabajo = new JLabel("<html><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br>Reclamos o Sugerencias</html>");
-        JLabel lblVigilado = new JLabel("<html><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</html>");
+        footer.add(new JLabel("<html><center><b>Contactanos</b><br>12314565465<br><b>Ubicación</b><br>Calle Falsa 123</center></html>", SwingConstants.CENTER));
+        footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><b>Reclamos o Sugerencias</b></center></html>", SwingConstants.CENTER));
+        footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</center></html>", SwingConstants.CENTER));
 
-        footer.add(lblContacto);
-        footer.add(lblTrabajo);
-        footer.add(lblVigilado);
-
-        // Agregar todo al frame
-        add(header, BorderLayout.NORTH);
-        add(tituloPanel, BorderLayout.CENTER);
-        add(panelCentral, BorderLayout.SOUTH);
-        add(footer, BorderLayout.PAGE_END);
+        add(footer, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+
+    private void realizarConsignacion() {
+        try {
+            double valor = Double.parseDouble(valorField.getText());
+            if (valor <= 0) {
+                JOptionPane.showMessageDialog(this, "Ingrese un valor mayor que cero.");
+                return;
+            }
+            tarjeta.consignar(valor);
+            saldoLabel.setText("Saldo: " + String.format("%.2f", tarjeta.getSaldo()) + "$");
+            JOptionPane.showMessageDialog(this, "Consignación realizada con éxito.");
+            valorField.setText("");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido.");
+        }
     }
 }

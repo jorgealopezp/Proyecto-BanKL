@@ -7,8 +7,8 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 
 import co.edu.konradlorenz.model.*;
-import co.edu.konradlorenz.view.HomePage;
-import co.edu.konradlorenz.view.Ventana;
+import co.edu.konradlorenz.view.*;
+
 
 public class Control {
 
@@ -18,7 +18,7 @@ public class Control {
     TarjetaCredito objTC = new TarjetaCredito();
     AlertasBancarias objAB = new AlertasBancarias();
     CambioDivisas objCD = new CambioDivisas();
-    Registro registro = new Registro(); // Instancia de Registro
+    Registro registro = new Registro(); 
 
     // Método principal que arranca el programa y muestra el menú principal
     public void run() {
