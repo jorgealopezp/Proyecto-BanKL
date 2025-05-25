@@ -1,12 +1,12 @@
 package co.edu.konradlorenz.view;
 
-import co.edu.konradlorenz.model.Ingreso;
-import co.edu.konradlorenz.model.Registro;
+import co.edu.konradlorenz.model.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class IngresoV extends JFrame {
+
     private Registro registro;
     private JTextField documentoField;
     private JPasswordField claveField;
@@ -62,9 +62,6 @@ public class IngresoV extends JFrame {
         loginButton.addActionListener(e -> {
             String doc = documentoField.getText();
             String clave = new String(claveField.getPassword());
-
-            Ingreso ingreso = new Ingreso(registro);
-
             if (registro.buscarClientePorDocumento(doc) == null) {
                 int opcion = JOptionPane.showOptionDialog(
                         this,
@@ -84,7 +81,7 @@ public class IngresoV extends JFrame {
                     documentoField.setText("");
                     claveField.setText("");
                 }
-            } else if (ingreso.autenticar(doc, clave)) {
+            } else if (Ingreso.autenticar(registro, doc, clave)) {
                 dispose();
                 new IngresoCliente(registro).setVisible(true);
             } else {
