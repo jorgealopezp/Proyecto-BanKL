@@ -58,9 +58,15 @@ public class HomePage extends JFrame {
         // CENTRO
         JPanel center = new JPanel(new GridLayout(1, 3, 20, 0));
         center.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
-        center.add(createCard("¿Quiénes somos?", "Lorem ipsum dolor sit amet..."));
-        center.add(createCard("Nuestros productos", "Lorem ipsum dolor sit amet..."));
-        center.add(createCard("Beneficios", "Lorem ipsum dolor sit amet..."));
+        center.add(createCard("¿Quiénes somos?",
+            "BanKL es una entidad financiera innovadora que trabaja por el bienestar económico de sus clientes. "
+          + "Ofrecemos servicios modernos y seguros. "));
+        center.add(createCard("Nuestros productos",
+            "Tarjetas de débito y crédito, ingreso y retiro de dinero, cambio de divisa, etc."
+          + "Descubre todo lo que podemos hacer por tu futuro financiero."));
+        center.add(createCard("Beneficios",
+            "Accede a alertas bancarias en tiempo real, y herramientas digitales "
+          + "que te ayudan a tomar mejores decisiones con tu dinero."));
 
         // FOOTER
         JPanel footer = new JPanel(new GridLayout(1, 3));

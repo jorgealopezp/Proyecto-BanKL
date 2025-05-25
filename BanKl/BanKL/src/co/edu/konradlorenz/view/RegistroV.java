@@ -2,7 +2,6 @@ package co.edu.konradlorenz.view;
 
 import co.edu.konradlorenz.model.*;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,8 +55,8 @@ public class RegistroV extends JFrame {
         footer.setBackground(new Color(220, 215, 210));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         footer.add(new JLabel("<html><b>Contáctanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>"));
-        footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br>Reclamos o Sugerencias</center></html>", SwingConstants.CENTER));
-        footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</center></html>", SwingConstants.RIGHT));
+        footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Explora oportunidades de empleo<br><br>¿Tienes reclamos o sugerencias?<br>¡Queremos escucharte!</center></html>", SwingConstants.CENTER));
+        footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Superintendencia Financiera de Colombia</center></html>", SwingConstants.RIGHT));
 
         add(header, BorderLayout.NORTH);
         add(formPanel, BorderLayout.CENTER);
@@ -95,7 +94,6 @@ public class RegistroV extends JFrame {
                 return;
             }
 
-          
             ClienteNatural nuevoCliente = new ClienteNatural(
                     nombre, "", documento, "", 0, "", new ArrayList<>(), documento, clave
             );
@@ -115,3 +113,4 @@ public class RegistroV extends JFrame {
         }
     }
 }
+
