@@ -8,7 +8,8 @@ import java.awt.event.ActionEvent;
 
 public class CambioDeDivisasV extends JFrame {
 
-    private final Registro registro;
+    private 
+     Registro registro;
     private final CambioDivisas cambioDivisas;
     private final AlertasBancarias alertasBancarias;
 

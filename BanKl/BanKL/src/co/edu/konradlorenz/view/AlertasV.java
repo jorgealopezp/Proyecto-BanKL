@@ -17,10 +17,7 @@ public class AlertasV extends JFrame {
     public AlertasV(AlertasBancarias alertasBancarias, Registro registro) {
         this.alertasBancarias = alertasBancarias;
         this.registro = registro;
-        inicializar();
-    }
 
-    private void inicializar() {
         setTitle("Alertas");
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -32,14 +29,18 @@ public class AlertasV extends JFrame {
         header.setBackground(new Color(220, 214, 208));
         header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel logo = new JLabel("<html><span style='font-size:36px; font-family:serif; font-weight:bold; color:#0F245E;'>Ban<span style='color:#D4CFC7;'>KL</span></span></html>");
-        JLabel slogan = new JLabel("<html><div style='font-size:14px;'>Innovación financiera para tu futuro</div></html>");
+        JLabel logo = new JLabel(
+                "<html><span style='font-size:36px; font-family:serif; font-weight:bold; color:#0F245E;'>Ban<span style='color:#D4CFC7;'>KL</span></span></html>");
+        JLabel slogan = new JLabel(
+                "<html><div style='font-size:14px;'>Innovación financiera para tu futuro</div></html>");
         JPanel logoPanel = new JPanel(new GridLayout(2, 1));
         logoPanel.setOpaque(false);
         logoPanel.add(logo);
         logoPanel.add(slogan);
 
-        JLabel bienvenida = new JLabel("<html><div style='font-size:14px; color:#0F245E;'>HOLA,<br>BIENVENIDO</div></html>", SwingConstants.RIGHT);
+        JLabel bienvenida = new JLabel(
+                "<html><div style='font-size:14px; color:#0F245E;'>HOLA,<br>BIENVENIDO</div></html>",
+                SwingConstants.RIGHT);
         JButton salir = new JButton("Salir");
         salir.addActionListener(e -> System.exit(0));
 
@@ -95,7 +96,7 @@ public class AlertasV extends JFrame {
         volver.setAlignmentX(Component.CENTER_ALIGNMENT);
         volver.addActionListener((ActionEvent e) -> {
             dispose();
-            new IngresoCliente(registro, alertasBancarias).setVisible(true);  // CORREGIDO: pasa también alertasBancarias
+            new IngresoCliente(registro, alertasBancarias).setVisible(true); // CORREGIDO: pasa también alertasBancarias
         });
 
         centro.add(titulo);
@@ -112,8 +113,10 @@ public class AlertasV extends JFrame {
         pie.setBackground(new Color(220, 214, 208));
         pie.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel contacto = new JLabel("<html><b>Contáctanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>");
-        JLabel trabaja = new JLabel("<html><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br><b>Reclamos o Sugerencias</b></html>");
+        JLabel contacto = new JLabel(
+                "<html><b>Contáctanos</b><br>1234565465<br><br><b>Ubicación</b><br>Calle Falsa 123</html>");
+        JLabel trabaja = new JLabel(
+                "<html><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br><b>Reclamos o Sugerencias</b></html>");
         JLabel legal = new JLabel("<html><b>Vigilados por</b><br>LOREM IPSUM DOLOR SIT AMET</html>");
 
         pie.add(contacto);
@@ -121,5 +124,7 @@ public class AlertasV extends JFrame {
         pie.add(legal);
 
         add(pie, BorderLayout.SOUTH);
+        setVisible(true);
+
     }
 }
