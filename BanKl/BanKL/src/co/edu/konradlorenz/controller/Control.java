@@ -10,5 +10,6 @@ public class Control {
         SwingUtilities.invokeLater(() -> {
             new HomePage().setVisible(true);
         });
+        
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Cliente {
+public abstract class Cliente  {
     // ATRIBUTOS
     protected String nombres;
     protected String apellidos;

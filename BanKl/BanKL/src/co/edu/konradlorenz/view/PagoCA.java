@@ -115,7 +115,7 @@ public class PagoCA extends JFrame {
         volverBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         volverBtn.addActionListener(e -> {
             dispose();
-            new Cuentas(registro, alertasBancarias).setVisible(true); // <- aquí el cambio
+            new Cuentas(registro, alertasBancarias).setVisible(true);
         });
         centro.add(volverBtn);
 
