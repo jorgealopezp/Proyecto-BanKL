@@ -67,16 +67,26 @@ public class Cuenta {
         this.cvv = cvv;
     }
 
-    public void consignar(double valor) {
-        saldo += valor;
+    // Ahora retorna String para ser compatible con TarjetaCredito
+    public String consignar(double valor) {
+        if (valor > 0) {
+            saldo += valor;
+            return "Consignación exitosa por $" + valor + ". Nuevo saldo: $" + saldo;
+        } else {
+            return "Error: El valor a consignar debe ser mayor que cero.";
+        }
     }
 
-    public boolean retirar(double valor) {
+    // Ahora retorna String para ser compatible con TarjetaCredito
+    public String retirar(double valor) {
         if (valor > 0 && valor <= saldo) {
             saldo -= valor;
-            return true;
+            return "Retiro exitoso por $" + valor + ". Nuevo saldo: $" + saldo;
+        } else if (valor <= 0) {
+            return "Error: El valor a retirar debe ser mayor que cero.";
+        } else {
+            return "Error: Fondos insuficientes para retirar $" + valor + ".";
         }
-        return false;
     }
 
     @Override
@@ -90,4 +100,4 @@ public class Cuenta {
                 ", cvv=" + cvv +
                 '}';
     }
-} 
+}

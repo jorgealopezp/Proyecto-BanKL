@@ -74,12 +74,13 @@ public class AlertasV extends JFrame {
         areaAlertas.setEditable(false);
         areaAlertas.setFont(new Font("Monospaced", Font.PLAIN, 14));
 
-        List<Alerta> alertas = alertasBancarias.revisarAlertas();
-        if (alertas.isEmpty()) {
+        // Aquí se muestran las alertas actuales
+        List<Alerta> listaAlertas = alertasBancarias.revisarAlertas();
+        if (listaAlertas.isEmpty()) {
             areaAlertas.setText("Lista vacía.");
         } else {
             StringBuilder sb = new StringBuilder();
-            for (Alerta alerta : alertas) {
+            for (Alerta alerta : listaAlertas) {
                 sb.append("ID: ").append(alerta.getId())
                         .append(" | Tipo: ").append(alerta.getTipo())
                         .append(" | Desc: ").append(alerta.getDescripcion()).append("\n");
@@ -95,7 +96,7 @@ public class AlertasV extends JFrame {
         volver.setAlignmentX(Component.CENTER_ALIGNMENT);
         volver.addActionListener((ActionEvent e) -> {
             dispose();
-            new IngresoCliente(registro, alertasBancarias).setVisible(true);  // CORREGIDO: pasa también alertasBancarias
+            new IngresoCliente(registro, alertasBancarias).setVisible(true);
         });
 
         centro.add(titulo);

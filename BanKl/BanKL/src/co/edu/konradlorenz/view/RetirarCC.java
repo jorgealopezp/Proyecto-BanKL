@@ -68,7 +68,7 @@ public class RetirarCC extends JFrame {
         btnRetirar.addActionListener(e -> {
             try {
                 double monto = Double.parseDouble(txtMonto.getText());
-                if (tarjeta.retirar(monto)) {
+                if (monto <= 0) {
                     JOptionPane.showMessageDialog(this,
                             "Avance exitoso.\nNuevo disponible: $" + tarjeta.getCupo() +
                             "\nDeuda actual: $" + Math.abs(tarjeta.getSaldo()));

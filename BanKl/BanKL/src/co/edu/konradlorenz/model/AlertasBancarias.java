@@ -11,6 +11,7 @@ public class AlertasBancarias {
     }
 
     public List<Alerta> revisarAlertas() {
+        // Devuelve una copia para evitar modificaciones externas
         return new ArrayList<>(listaAlertas);
     }
 }

@@ -1,11 +1,7 @@
 package co.edu.konradlorenz.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TarjetaCredito extends Cuenta {
     private double cupo;
-    private List<String> alertas = new ArrayList<>();
 
     public TarjetaCredito(int numeroCuenta, String propietario, int saldo, String numeroTarjeta, String fechaExpiracion, int cvv, double cupo) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
@@ -29,19 +25,19 @@ public class TarjetaCredito extends Cuenta {
     }
 
     @Override
-    public void consignar(double valor) {
+    public String consignar(double valor) {
         try {
             validarTransaccion(valor, 3000000);
             setSaldo(getSaldo() + valor);
             cupo += valor;
-            alertas.add("Pago realizado en tarjeta de crédito: " + valor);
+            return "Pago realizado en tarjeta de crédito: " + valor;
         } catch (IllegalArgumentException e) {
-            alertas.add("Error en consignación: " + e.getMessage());
+            return "Error en consignación: " + e.getMessage();
         }
     }
 
     @Override
-    public boolean retirar(double valor) {
+    public String retirar(double valor) {
         try {
             validarTransaccion(valor, 3000000);
             if (valor > cupo) {
@@ -49,16 +45,10 @@ public class TarjetaCredito extends Cuenta {
             }
             setSaldo(getSaldo() - valor);
             cupo -= valor;
-            alertas.add("Avance en efectivo de tarjeta de crédito: " + valor);
-            return true;
+            return "Avance en efectivo de tarjeta de crédito: " + valor;
         } catch (IllegalArgumentException e) {
-            alertas.add("Error en retiro: " + e.getMessage());
-            return false;
+            return "Error en retiro: " + e.getMessage();
         }
-    }
-
-    public List<String> getAlertas() {
-        return new ArrayList<>(alertas);
     }
 
     private void validarTransaccion(double valor, double limiteMaximo) {

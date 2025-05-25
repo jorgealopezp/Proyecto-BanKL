@@ -1,43 +1,34 @@
 package co.edu.konradlorenz.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TarjetaDebito extends Cuenta {
-
-    private List<String> alertas = new ArrayList<>();
-
-    public TarjetaDebito() {}
 
     public TarjetaDebito(int numeroCuenta, String propietario, double saldo, String numeroTarjeta, String fechaExpiracion, int cvv) {
         super(numeroCuenta, propietario, saldo, numeroTarjeta, fechaExpiracion, cvv);
     }
 
-    public List<String> getAlertas() {
-        return new ArrayList<>(alertas);
-    }
-
-    public void setAlertas(List<String> alertas) {
-        this.alertas = new ArrayList<>(alertas);
+    public TarjetaDebito() {
+        super();
     }
 
     @Override
-    public void consignar(double valor) {
+    public String consignar(double valor) {
         if (valor > 0) {
             setSaldo(getSaldo() + valor);
-            alertas.add("Depósito en tarjeta débito: " + valor);
+            return "Consignación exitosa por $" + valor + ". Nuevo saldo: $" + getSaldo();
+        } else {
+            return "Error: El valor a consignar debe ser mayor que cero.";
         }
     }
 
     @Override
-    public boolean retirar(double valor) {
+    public String retirar(double valor) {
         if (valor > 0 && valor <= getSaldo()) {
             setSaldo(getSaldo() - valor);
-            alertas.add("Retiro en tarjeta débito: " + valor);
-            return true;
+            return "Retiro exitoso por $" + valor + ". Nuevo saldo: $" + getSaldo();
+        } else if (valor <= 0) {
+            return "Error: El valor a retirar debe ser mayor que cero.";
         } else {
-            alertas.add("Intento de retiro fallido: fondos insuficientes o monto inválido.");
-            return false;
+            return "Error: Fondos insuficientes para retirar $" + valor + ".";
         }
     }
 }

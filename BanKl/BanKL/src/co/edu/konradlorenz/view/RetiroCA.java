@@ -128,8 +128,8 @@ public class RetiroCA extends JFrame {
                     List<Cuenta> cuentas = cliente.getCuentas();
                     for (Cuenta cuenta : cuentas) {
                         if (cuenta instanceof TarjetaDebito debito) {
-                            boolean exito = debito.retirar(monto);
-                            if (exito) {
+                            String exito = debito.retirar(monto);
+                            if (exito != null && exito.contains("Retiro exitoso")) {
                                 JOptionPane.showMessageDialog(this,
                                         "Retiro exitoso. Nuevo saldo: $" + debito.getSaldo());
                             } else {
