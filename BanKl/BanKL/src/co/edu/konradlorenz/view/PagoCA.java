@@ -126,7 +126,7 @@ public class PagoCA extends JFrame {
         footer.setBackground(new Color(221, 214, 208));
         footer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        footer.add(new JLabel("<html><center><b>Contactanos</b><br>12314565465<br><b>Ubicación</b><br>Calle Falsa 123</center></html>", SwingConstants.CENTER));
+        footer.add(new JLabel("<html><center><b>Contáctanos</b><br>12314565465<br><b>Ubicación</b><br>Calle Falsa 123</center></html>", SwingConstants.CENTER));
         footer.add(new JLabel("<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><b>Reclamos o Sugerencias</b></center></html>", SwingConstants.CENTER));
         footer.add(new JLabel("<html><center><b>Vigilados por</b><br>Lorem ipsum dolor sit amet</center></html>", SwingConstants.CENTER));
 
@@ -142,8 +142,13 @@ public class PagoCA extends JFrame {
                 JOptionPane.showMessageDialog(this, "Ingrese un valor mayor que cero.");
                 return;
             }
+
             tarjeta.consignar(valor);
             saldoLabel.setText("Saldo: " + String.format("%.2f", tarjeta.getSaldo()) + "$");
+
+            //  Registrar alerta de consignación
+            alertasBancarias.registrarAlerta("Consignación", "Se consignaron $" + valor + " a la cuenta de ahorros.");
+
             JOptionPane.showMessageDialog(this, "Consignación realizada con éxito.");
             valorField.setText("");
         } catch (NumberFormatException ex) {

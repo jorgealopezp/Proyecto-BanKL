@@ -30,7 +30,7 @@ public class AlertasV extends JFrame {
         header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel logo = new JLabel(
-                "<html><span style='font-size:36px; font-family:serif; font-weight:bold; color:#0F245E;'>Ban<span style='color:#D4CFC7;'>KL</span></span></html>");
+                "<html><span style='font-size:36px; font-family:serif; font-weight:bold; color:#0F245E;'>Ban<span style='color:#FFFFFF;'>KL</span></span></html>");
         JLabel slogan = new JLabel(
                 "<html><div style='font-size:14px;'>Innovación financiera para tu futuro</div></html>");
         JPanel logoPanel = new JPanel(new GridLayout(2, 1));
@@ -96,7 +96,7 @@ public class AlertasV extends JFrame {
         volver.setAlignmentX(Component.CENTER_ALIGNMENT);
         volver.addActionListener((ActionEvent e) -> {
             dispose();
-            new IngresoCliente(registro, alertasBancarias).setVisible(true); // CORREGIDO: pasa también alertasBancarias
+            new IngresoCliente(registro, alertasBancarias).setVisible(true); 
         });
 
         centro.add(titulo);

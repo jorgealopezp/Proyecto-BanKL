@@ -9,7 +9,9 @@ public class RetirarCC extends JFrame {
     private TarjetaCredito tarjeta;
     private AlertasBancarias alertasBancarias;
 
-    public RetirarCC(Registro registro, AlertasBancarias alertarBancarias) {
+    public RetirarCC(Registro registro, AlertasBancarias alertasBancarias) {
+        this.alertasBancarias = alertasBancarias;
+
         ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();
@@ -69,12 +71,15 @@ public class RetirarCC extends JFrame {
             try {
                 double monto = Double.parseDouble(txtMonto.getText());
                 if (tarjeta.retirar(monto)) {
+                    // REGISTRO DE ALERTA
+                    alertasBancarias.registrarAlerta("Avance", "Se hizo un avance de $" + monto + " a su tarjeta de crédito.");
+
                     JOptionPane.showMessageDialog(this,
                             "Avance exitoso.\nNuevo disponible: $" + tarjeta.getCupo() +
                             "\nDeuda actual: $" + Math.abs(tarjeta.getSaldo()));
 
                     dispose(); // Cierra la ventana actual
-                    new Cuentas(registro,alertarBancarias).setVisible(true); 
+                    new Cuentas(registro, alertasBancarias).setVisible(true); 
                 } else {
                     JOptionPane.showMessageDialog(this, "Fondos insuficientes.");
                 }

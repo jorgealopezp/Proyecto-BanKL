@@ -1,19 +1,15 @@
-
 package co.edu.konradlorenz.model;
 
 public class Alerta {
     // ATRIBUTOS
-    private static int contador = 0; // Contador estático para llevar el registro de la cantidad de alertas
+    private static int contador = 0; 
     private int id;
     private String tipo;
     private String descripcion;
 
-    public Alerta() {
-    }
-
-    // CONSTRUCTOR
-    public Alerta(int id, String tipo, String descripcion) {
-        this.id = id;
+    // CONSTRUCTOR AUTOMÁTICO
+    public Alerta(String tipo, String descripcion) {
+        this.id = ++contador; // ID autoincremental
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
@@ -45,10 +41,6 @@ public class Alerta {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override

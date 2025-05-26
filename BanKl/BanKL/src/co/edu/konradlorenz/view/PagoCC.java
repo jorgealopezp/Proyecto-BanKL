@@ -2,14 +2,16 @@ package co.edu.konradlorenz.view;
 
 import co.edu.konradlorenz.model.*;
 
-
 import javax.swing.*;
 import java.awt.*;
 
 public class PagoCC extends JFrame {
     private TarjetaCredito tarjeta;
+    private AlertasBancarias alertasBancarias;
 
     public PagoCC(Registro registro, AlertasBancarias alertasBancarias) {
+        this.alertasBancarias = alertasBancarias;
+
         ClienteNatural cliente = registro.getClienteAutenticado();
         if (cliente != null && cliente.getTarjetaCredito() != null) {
             this.tarjeta = cliente.getTarjetaCredito();
@@ -58,6 +60,10 @@ public class PagoCC extends JFrame {
             try {
                 double valor = Double.parseDouble(campoPago.getText());
                 tarjeta.consignar(valor);
+                
+                // REGISTRAR ALERTA DE PAGO
+                alertasBancarias.registrarAlerta("Pago", "Se realizó un pago de $" + valor + " a su tarjeta de crédito.");
+
                 resultado.setText("Pago exitoso. Nuevo saldo: $" + tarjeta.getSaldo());
                 montoDeuda.setText(String.format("%.1f$", tarjeta.getSaldo()));
             } catch (NumberFormatException ex) {

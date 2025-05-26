@@ -103,7 +103,7 @@ public class RetiroCA extends JFrame {
         footer.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
 
         JLabel contacto = new JLabel(
-                "<html><b>Contactanos</b><br>12345654565<br><br><b>Ubicacion</b><br>Calle Falsa 123</html>");
+                "<html><b>Contáctanos</b><br>12345654565<br><br><b>Ubicación</b><br>Calle Falsa 123</html>");
         JLabel trabaja = new JLabel(
                 "<html><center><b>Trabaja Con Nosotros</b><br>Puestos disponibles<br><br>Reclamos o Sugerencias</center></html>",
                 SwingConstants.CENTER);
@@ -130,6 +130,9 @@ public class RetiroCA extends JFrame {
                         if (cuenta instanceof TarjetaDebito debito) {
                             boolean exito = debito.retirar(monto);
                             if (exito) {
+                                //  Registrar alerta de retiro
+                                alertasBancarias.registrarAlerta("Retiro", "Se retiraron $" + monto + " de la cuenta de ahorros.");
+
                                 JOptionPane.showMessageDialog(this,
                                         "Retiro exitoso. Nuevo saldo: $" + debito.getSaldo());
                             } else {
